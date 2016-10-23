@@ -9,7 +9,7 @@ import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ListView scrolllList
+    private ListView scrolllList;
     private Button addbutton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-                ));
 
             }
         });
