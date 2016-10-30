@@ -29,6 +29,10 @@
         <activity
             android:name=".Team19activity"
             android:label="@string/title_activity_team19activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
