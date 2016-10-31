@@ -12,7 +12,7 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
 
     private ListView scrolllList;
-    private Button addbutton;
+    private Button addbutton, settingsButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +30,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+            }
+        });
+        settingsButton = (Button) findViewById(R.id.button2);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, SetiingsActivity.class));
             }
         });
     }
