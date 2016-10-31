@@ -6,11 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.content.SharedPreferences;
+
 
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,15 +23,29 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.facebook.FacebookSdk;
 
+
 public class SigninActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
+    private SharedPreferencesEditor editor;
+
+   // @Override
+    //public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    //
+    //}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String skipper = "true";
+   //     editor = new SharedPreferencesEditor(getSharedPreferences("signIn", MODE_PRIVATE));
+     //   if(editor.getLoginSkip().equals(skipper)){
+       //     startActivity(new Intent(SigninActivity.this, MainActivity.class));
+         //   finish();
+        //}
+
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
@@ -35,6 +53,7 @@ public class SigninActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
+            editor.addLoginSkip(skipper);
             startActivity(new Intent(SigninActivity.this, MainActivity.class));
             finish();
         }
