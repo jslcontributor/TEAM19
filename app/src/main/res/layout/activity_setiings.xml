@@ -31,7 +31,8 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:weightSum="1">
 
         <EditText
             android:id="@+id/old_email"
@@ -124,6 +125,15 @@
             android:text="@string/btn_remove"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_weight="0.49" />
 
         <Button
             android:id="@+id/change_email_button"
