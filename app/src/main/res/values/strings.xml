@@ -34,4 +34,5 @@
     <!-- Strings related to login -->
     <string name="title_activity_team19activity">Team19activity</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
