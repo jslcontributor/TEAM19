@@ -23,12 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
        // Firebase.setAndroidContext(this);
         auth = FirebaseAuth.getInstance();
-        if(auth.getCurrentUser() == null) {
-            //todo: handle this shit if facebook login but no fuegobase account
-            //also, handle the setiingsactivity so when you connect facebook button, shithappens
-            //also, handle setiingsactivity signoutshit with facebook
-            //also,
-        }
+
         setContentView(R.layout.activity_main);
         scrolllList = (ListView) findViewById(R.id.listView);
         addbutton = (Button) findViewById(R.id.button1);
