@@ -11,11 +11,21 @@
     tools:context="com.apockestafe.team19.EventInfo">
 
     <Button
-        android:text="Button"
+        android:text="Go To Map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:id="@+id/MapButton"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:id="@+id/MapButton" />
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="43dp" />
+
+    <Button
+        android:text="List Ride"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/MapButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="44dp"
+        android:id="@+id/listRideButton" />
 </RelativeLayout>

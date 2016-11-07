@@ -68,13 +68,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng rideLocation = new LatLng(32.881706, -117.232939);
         LatLng eventLocation;
-        eventLocation = getLocationFromAddress(this, "21 Edendale St, Ladera Ranch, CA, 92694");
+        eventLocation = getLocationFromAddress(this, "3860 Van Dyke Ave, San Diego, CA, 92105");
         String markerPicture = "car.ico";
 
 
 
         float zoomLevel = (float) 15.0;
-        mMap.addMarker(new MarkerOptions().position(rideLocation).title("Pickup Location").icon(BitmapDescriptorFactory.fromFile("car.ico")));
+        String[] carAddresses = getCarLocations();
+        for (int i = 0; i < carAddresses.length; i++) {
+            LatLng carLocation;
+            carLocation = getLocationFromAddress(this, carAddresses[i]);
+            mMap.addMarker(new MarkerOptions().position(carLocation).title("Car Location")); //.icon(BitmapDescriptorFactory.fromFile("car.ico")));
+
+        }
         mMap.addMarker(new MarkerOptions().position(eventLocation).title("Event Location"));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, zoomLevel));
@@ -84,7 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Geocoder coder = new Geocoder(context);
         List<Address> address;
-        LatLng p1 = null;
+        LatLng latlng = null;
 
         try {
             address = coder.getFromLocationName(strAddress, 5);
@@ -95,14 +101,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             location.getLatitude();
             location.getLongitude();
 
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+            latlng = new LatLng(location.getLatitude(), location.getLongitude() );
 
         } catch (Exception ex) {
 
             ex.printStackTrace();
         }
 
-        return p1;
+        return latlng;
+    }
+
+    public String[] getCarLocations() {
+        String[] carAddresses = new String[3];
+        carAddresses[0] = "21 Edendale St, Ladera Ranch, CA, 92694";
+        carAddresses[1] = "3853 Van Dyke Ave, San Diego, CA, 92105";
+        carAddresses[2] = "2915 Estancia, San Clemente, CA, 92670";
+        return carAddresses;
     }
 
 }
