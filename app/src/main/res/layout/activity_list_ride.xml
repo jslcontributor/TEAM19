@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/seatCountValue"
+        android:id="@+id/seatCountValue1"
         android:layout_below="@+id/addressValue"
         android:layout_alignParentEnd="true" />
 </RelativeLayout>

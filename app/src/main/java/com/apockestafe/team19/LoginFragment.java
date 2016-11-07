@@ -110,7 +110,7 @@ public class LoginFragment extends Fragment /*this extends might needs
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
+//                handleFacebookAccessToken(loginResult.getAccessToken());
                 String tokener = loginResult.getAccessToken().getToken();
 
                 openNextActivity();

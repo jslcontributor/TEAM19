@@ -31,7 +31,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
        // Firebase.setAndroidContext(this);
         auth = FirebaseAuth.getInstance();
-        String token = editor.getToken();
+        //String token = editor.getToken();
+        try {
+            System.out.println(AccessToken.getCurrentAccessToken().getToken());
+        }
+        catch(NullPointerException e) {
+            System.out.println("aeljaejla");
+        }
+        String token = AccessToken.getCurrentAccessToken().getToken();
         handleFacebookAccessToken(token);
 
         setContentView(R.layout.activity_main);
