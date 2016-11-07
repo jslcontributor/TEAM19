@@ -26,6 +26,14 @@ class SharedPreferencesEditor {
         editor.apply();
     }
 
+    public void addToken(String token) {
+        if(getToken() != null) {
+            editor.remove("fbtoken");
+        }
+        editor.putString("fbtoken", "");
+        editor.apply();
+    }
+
     public void deleteMyEmail(){
         editor.remove("myEmail");
         editor.apply();
@@ -35,6 +43,8 @@ class SharedPreferencesEditor {
         editor.remove("loginSkip");
         editor.apply();
     }
+
+    public String getToken() {return sharedPreferences.getString("fbtoken", ""); }
 
     public String getMyEmail() {
         return sharedPreferences.getString("myEmail", "");

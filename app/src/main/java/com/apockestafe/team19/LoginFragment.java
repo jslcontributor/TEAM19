@@ -31,6 +31,8 @@ import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Arrays;
+
 import static com.facebook.internal.FacebookDialogFragment.TAG;
 
 public class LoginFragment extends Fragment /*this extends might needs
@@ -40,6 +42,7 @@ public class LoginFragment extends Fragment /*this extends might needs
     public AccessTokenTracker mAccessTokenTracker;
     public ProfileTracker mProfileTracker;
     private FirebaseAuth mAuth;
+    //private UiLifecycleHelper uiHelper;
     LoginButton loginButton;
 
     private FacebookCallback<LoginResult> mCallback = new FacebookCallback<LoginResult>() {
@@ -48,6 +51,7 @@ public class LoginFragment extends Fragment /*this extends might needs
             AccessToken accesstoken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
             Log.d("get me profile", "Name");
+            //handleFacebookAccessToken(accesstoken);
             openNextActivity();
 
         }
@@ -100,13 +104,16 @@ public class LoginFragment extends Fragment /*this extends might needs
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_signin, container, false);
         loginButton = (LoginButton) view.findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email", "public_profile");
+        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
         loginButton.setFragment(this);
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
+                String tokener = loginResult.getAccessToken().getToken();
+
+                openNextActivity();
             }
 
             @Override
@@ -123,15 +130,15 @@ public class LoginFragment extends Fragment /*this extends might needs
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
-        loginButton.setReadPermissions("public_profile");
-        loginButton.setFragment(this);
-        loginButton.registerCallback(mCallbackManager, mCallback);
-
-    }
+   // @Override
+    //public void onViewCreated(View view, Bundle savedInstanceState) {
+        //super.onViewCreated(view, savedInstanceState);
+        //LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
+      //  loginButton.setReadPermissions("public_profile");
+    //    loginButton.setFragment(this);
+  //      loginButton.registerCallback(mCallbackManager, mCallback);
+//
+    //}
 
     @Override
     public void onResume() {
@@ -153,11 +160,12 @@ public class LoginFragment extends Fragment /*this extends might needs
     }
 
     public void openNextActivity(){
-        startActivity(new Intent(super.getContext(), MainActivity.class)); //super.getContext() might be incorrect
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent); //super.getContext() might be incorrect
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
-        Log.d(TAG, "handleFacebookAccessToken:" + token);
+        Log.d("herehere", "handleFacebookAccessToken:" + token);
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential).addOnCompleteListener(super.getActivity(), new OnCompleteListener<AuthResult>() {
             @Override

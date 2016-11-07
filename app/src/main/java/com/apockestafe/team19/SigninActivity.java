@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -20,7 +21,9 @@ import android.content.SharedPreferences;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.*;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -38,7 +41,7 @@ import com.google.firebase.auth.FirebaseUser;
 import static com.facebook.internal.FacebookDialogFragment.TAG;
 
 
-public class SigninActivity extends AppCompatActivity {
+public class SigninActivity extends FragmentActivity {
 
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
@@ -46,6 +49,7 @@ public class SigninActivity extends AppCompatActivity {
     private Button btnSignup, btnLogin, btnReset;
     private SharedPreferencesEditor editor;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private LoginFragment loginFragment;
     CallbackManager callbackManager;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -60,7 +64,7 @@ public class SigninActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String skipper = "true";
+        //String skipper = "true";
         //     editor = new SharedPreferencesEditor(getSharedPreferences("signIn", MODE_PRIVATE));
         //   if(editor.getLoginSkip().equals(skipper)){
         //     startActivity(new Intent(SigninActivity.this, MainActivity.class));
@@ -68,18 +72,27 @@ public class SigninActivity extends AppCompatActivity {
         //}
 
         super.onCreate(savedInstanceState);
+       // Firebase.setAndroidContext(this);
+        if(savedInstanceState == null) {
+            loginFragment = new LoginFragment();
+            getSupportFragmentManager().beginTransaction().add(android.R.id.content, loginFragment).commit();
+        }
+        else{
+            loginFragment = (LoginFragment) getSupportFragmentManager().findFragmentById(android.R.id.content);
+        }
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        //loginButton.setFragment(com.facebook.login.LoginFragment.java);
         AppEventsLogger.activateApp(this);
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
-        if (auth.getCurrentUser() != null) {
-            editor.addLoginSkip(skipper);
-            startActivity(new Intent(SigninActivity.this, MainActivity.class));
-            finish();
-        }
+//        if (auth.getCurrentUser() != null) {
+//            editor.addLoginSkip(skipper);
+//            startActivity(new Intent(SigninActivity.this, MainActivity.class));
+//            finish();
+//        }
 
         // set the view now
         setContentView(R.layout.activity_signin);
@@ -95,7 +108,7 @@ public class SigninActivity extends AppCompatActivity {
         btnReset = (Button) findViewById(R.id.btn_reset_password);
 
         //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
+      //  auth = FirebaseAuth.getInstance();
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,9 +227,10 @@ public class SigninActivity extends AppCompatActivity {
     }
 
 
-    private void handleFacebookAccessToken(AccessToken token) {
-        Log.d(TAG, "handleFacebookAccessToken:" + token);
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
 
-    }
+    //private void handleFacebookAccessToken(AccessToken token) {
+      //  Log.d(TAG, "handleFacebookAccessToken:" + token);
+    //    AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+//
+  //  }
 }
