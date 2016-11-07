@@ -3,6 +3,7 @@ package com.apockestafe.team19;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private ListView scrolllList;
+    private ListView scrollList;
     private Button addbutton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +28,18 @@ public class LoginActivity extends AppCompatActivity {
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, eventString);
 
         setContentView(R.layout.activity_main);
-        scrolllList = (ListView) findViewById(R.id.listView);
-        scrolllList.setAdapter(arrayAdapter);
+        scrollList = (ListView) findViewById(R.id.listView);
+        scrollList.setAdapter(arrayAdapter);
+        scrollList = (ListView) findViewById(R.id.listView);
+        scrollList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent newActivity = new Intent(LoginActivity.this, EventInfo.class);
+                startActivity(newActivity);
+            }
+        });
+
+
         addbutton = (Button) findViewById(R.id.button1);
 
         addbutton.setOnClickListener(new View.OnClickListener() {

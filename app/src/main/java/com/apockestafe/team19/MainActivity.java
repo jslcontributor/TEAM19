@@ -1,8 +1,10 @@
 package com.apockestafe.team19;
 
+import android.app.ListActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.content.Intent;
@@ -13,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ListView scrolllList;
+    private ListView scrollList;
     private Button addbutton, settingsButton;
     private FirebaseAuth auth;
     private SharedPreferencesEditor editor;
@@ -30,20 +32,24 @@ public class MainActivity extends AppCompatActivity {
             //also,
         }
         setContentView(R.layout.activity_main);
-        scrolllList = (ListView) findViewById(R.id.listView);
-        addbutton = (Button) findViewById(R.id.button1);
 
+        scrollList = (ListView) findViewById(R.id.listView);
+        scrollList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent newActivity = new Intent(MainActivity.this, EventInfo.class);
+                startActivity(newActivity);
+            }
+        });
+
+        addbutton = (Button) findViewById(R.id.button1);
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, EventActivity.class));
-
-
-
-
-
             }
         });
+
         settingsButton = (Button) findViewById(R.id.button2);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SetiingsActivity.class));
             }
         });
-
     }
+
+
 }
