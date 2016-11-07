@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Firebase.setAndroidContext(this);
+        //Firebase.setAndroidContext(this);
         String[] eventString = new String[] {"Leslie's Super Sweet 16 09/20"};
         final List<String> listStringer = new ArrayList<String>(Arrays.asList(eventString));
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, eventString);
