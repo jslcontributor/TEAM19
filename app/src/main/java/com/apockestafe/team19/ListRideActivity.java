@@ -11,6 +11,7 @@ public class ListRideActivity extends AppCompatActivity {
 
     private Button submitRide, cancelRide;
     private EditText addressValue, seatCountValue;
+    private boolean rideListed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,12 @@ public class ListRideActivity extends AppCompatActivity {
         submitRide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ListRideActivity.this, EventInfo.class));
+                if (!rideListed) {
+                    startActivity(new Intent(ListRideActivity.this, EventInfo.class));
+
+                } else {
+
+                }
 
             }
         });
