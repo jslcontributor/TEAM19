@@ -28,4 +28,13 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="44dp"
         android:id="@+id/listRideButton" />
+
+    <Button
+        android:text="Back to Events"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="11dp"
+        android:id="@+id/backButton" />
 </RelativeLayout>

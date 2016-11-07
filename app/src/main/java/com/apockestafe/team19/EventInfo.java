@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class EventInfo extends AppCompatActivity {
 
-    private Button mapButton, listRideButton;
+    private Button mapButton, listRideButton, backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,5 +33,13 @@ public class EventInfo extends AppCompatActivity {
 
             }
         });
-    }
+
+        backButton = (Button)findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(EventInfo.this, LoginActivity.class));
+
+            }
+        });    }
 }
