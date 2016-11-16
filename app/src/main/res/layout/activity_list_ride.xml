@@ -38,23 +38,6 @@
         android:id="@+id/errorText" />
 
     <TextView
-        android:text="Number of Seats:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/seatCount"
-        android:layout_centerVertical="true"
-        android:layout_alignEnd="@+id/submitRide" />
-
-    <TextView
-        android:text="Street Address:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/seatCount"
-        android:layout_marginTop="37dp"
-        android:id="@+id/streetAddress" />
-
-    <TextView
         android:text="City:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -103,13 +86,12 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:digits="0123456789"
-        android:inputType="numberDecimal"
+        android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/seatCountValue"
-        android:layout_alignBaseline="@+id/seatCount"
-        android:layout_alignBottom="@+id/seatCount"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/cityValue"
+        android:layout_alignBaseline="@+id/city"
+        android:layout_alignBottom="@+id/city"
+        android:layout_toEndOf="@+id/city" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -118,18 +100,38 @@
         android:id="@+id/zipcodeValue"
         android:digits="0123456789"
         android:inputType="numberDecimal"
-        android:layout_below="@+id/stateValue"
+        android:layout_alignBaseline="@+id/zipcode"
+        android:layout_alignBottom="@+id/zipcode"
         android:layout_toEndOf="@+id/zipcode"
         android:layout_marginStart="11dp" />
 
-    <EditText
+    <TextView
+        android:text="Street Address:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:layout_marginTop="38dp"
+        android:id="@+id/streetAddress"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="# of Seats:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seatCount"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:digits="0123456789"
+        android:inputType="numberDecimal"
         android:ems="10"
-        android:id="@+id/cityValue"
-        android:layout_below="@+id/streetAddress"
-        android:layout_toEndOf="@+id/city" />
+        android:id="@+id/seatCountValue"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/seatCount"
+        android:layout_marginStart="11dp" />
 
 </RelativeLayout>
 

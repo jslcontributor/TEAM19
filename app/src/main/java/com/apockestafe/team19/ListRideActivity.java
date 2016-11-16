@@ -55,11 +55,11 @@ public class ListRideActivity extends AppCompatActivity {
                     errorText.setText("Error. Enter your car address and seat count");
                 } else if (addressValue.length() == 0) {
                     errorText.setText("Error. Enter your car address");
-                } else if (seatCount == 0) {
-                    errorText.setText("Error. Enter your seat count.");
                 } else if (!checkValidAddress(addressValue)) {
                     errorText.setText("Not a valid address.");
-                } else if (!rideListed && addressValue.length() > 0 && seatCount != 0 && checkValidAddress(addressValue)) {
+                } else if (seatCount == 0) {
+                    errorText.setText("Error. Enter your seat count.");
+                }  else if (!rideListed && addressValue.length() > 0 && seatCount != 0 && checkValidAddress(addressValue)) {
                     errorText.setText(" ");
                     //e.addRideLocation(addressValue.getText().toString());
                     startActivity(new Intent(ListRideActivity.this, EventInfo.class));
@@ -101,6 +101,11 @@ public class ListRideActivity extends AppCompatActivity {
                         cv.getText().toString() + ", " +
                         sv.getText().toString() + ", " +
                         zcv.getText().toString();
+
+        if (address.compareTo(", , , ") == 0) {
+            System.out.println("Address: ");
+            return "";
+        }
 
         System.out.println("Address: " + address);
         return address;
