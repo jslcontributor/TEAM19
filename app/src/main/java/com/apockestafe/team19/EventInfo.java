@@ -23,7 +23,7 @@ public class EventInfo extends AppCompatActivity {
                 startActivity(new Intent(EventInfo.this, MapsActivity.class));
 
             }
-        });
+        });//
 
         listRideButton = (Button)findViewById(R.id.listRideButton);
         listRideButton.setOnClickListener(new View.OnClickListener() {
