@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.facebook.AccessToken;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -39,6 +40,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Button backButton;
     private String eventAddress;
+    private SharedPreferencesEditor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +100,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (rideInfo != null) {
                     for (int i = 0; i < rideInfo.size(); i++) {
                         LatLng ll = getLocationFromAddress(maps, rideInfo.get(i).getCarAddress());
-                        if (ll != null)
+                        if (ll != null) {
                             mMap.addMarker(new MarkerOptions().position(ll).title("Car Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.car)));
+//                            rideInfo.get(i).setLatlng(ll);
+//                            ref.child("rideLocation").setValue(rideInfo);
+                        }
                     }
                 }
 
@@ -117,6 +123,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
                 if (marker.getTitle().equals("Car Location")) {
+                    editor = new SharedPreferencesEditor(getSharedPreferences("marker", MODE_PRIVATE));
+                    editor.addMarker(marker.getPosition());
                     startActivity(new Intent(MapsActivity.this, Ride.class));
                 }
                 return false;
@@ -160,5 +168,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void setEventAddress(String ea) {
         eventAddress = ea;
     }
+
 
 }

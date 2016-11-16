@@ -6,6 +6,8 @@ package com.apockestafe.team19;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 
+import com.google.android.gms.maps.model.LatLng;
+
 class SharedPreferencesEditor {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -18,6 +20,12 @@ class SharedPreferencesEditor {
 
     public void addMyEmail(String email) {
         editor.putString("myEmail", email);
+        editor.apply();
+    }
+
+    public void addMarker(LatLng latlng) {
+        String ll = latlng.toString();
+        editor.putString("prevMarker", ll);
         editor.apply();
     }
 
@@ -53,6 +61,8 @@ class SharedPreferencesEditor {
     public String getLoginSkip() {
         return sharedPreferences.getString("loginSkip", "");
     }
+
+    public String getMarker() { return sharedPreferences.getString("prevMarker", ""); }
 
 
 

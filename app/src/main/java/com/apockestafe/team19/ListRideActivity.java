@@ -74,7 +74,9 @@ public class ListRideActivity extends AppCompatActivity {
                             final FirebaseDatabase database = FirebaseDatabase.getInstance();
                             ref = database.getReference("events/" + key);
                             ArrayList<String> peopleInCar = new ArrayList<>();
-                            RideInfo ri = new RideInfo(addressValue, peopleInCar, seatCount);
+                            Context c = getApplicationContext();
+                            LatLng ll = getLocationFromAddress(c, addressValue);
+                            RideInfo ri = new RideInfo(addressValue, peopleInCar, seatCount); //, ll);
                             List<RideInfo> rideInfo;
                             GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
                             rideInfo = dataSnapshot.child("rideLocation").getValue(t);
