@@ -23,7 +23,13 @@
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SigninActivity"></activity>
+        <activity android:name=".SigninActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".EventActivity" />
         <activity
             android:name=".LoginActivity"
@@ -65,11 +71,7 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!--
      ATTENTION: This was auto-generated to add Google Play services to your project for

@@ -17,6 +17,7 @@ public class EventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
+        final SharedPreferencesEditor sp = new SharedPreferencesEditor(getSharedPreferences("login", MODE_PRIVATE));
         title = (EditText)findViewById(R.id.title);
         date = (EditText)findViewById(R.id.date);
         time = (EditText)findViewById(R.id.time);
@@ -35,7 +36,14 @@ public class EventActivity extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(EventActivity.this, LoginActivity.class));
+                Event event = new Event(title.getText().toString(),
+                        date.getText().toString(), time.getText().toString(),
+                        location.getText().toString(), description.getText().toString(),
+                        null);
+                event.add();
+
+                finish();
+                //startActivity(new Intent(EventActivity.this, LoginActivity.class));
             }
         });
     }

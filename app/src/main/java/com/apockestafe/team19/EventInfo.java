@@ -38,8 +38,8 @@ public class EventInfo extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(EventInfo.this, LoginActivity.class));
-
+                //startActivity(new Intent(EventInfo.this, LoginActivity.class));
+                finish();
             }
         });
     }
