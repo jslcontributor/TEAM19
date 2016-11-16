@@ -2,6 +2,12 @@ package com.apockestafe.team19;
 
 import com.apockestafe.team19.Event;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +32,7 @@ public class ListRideActivity extends AppCompatActivity {
     private boolean rideListed;
     private int seatCount;
     private String addressValue;
-    private ArrayList<String> carData;
+    private ArrayList<String> carData = new ArrayList<>();
     private Event e;
 
     @Override
@@ -34,8 +40,6 @@ public class ListRideActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_ride);
 
-//        address = (TextView) findViewById(R.id.address);
-//        seatCount = (TextView)findViewById(R.id.seatCount);
         streetAddressValue = (EditText) findViewById(R.id.streetAddressValue);
         cityValue = (EditText) findViewById(R.id.cityValue);
         stateValue = (EditText) findViewById(R.id.stateValue);
@@ -62,8 +66,47 @@ public class ListRideActivity extends AppCompatActivity {
                     errorText.setText("Error. Enter your seat count.");
                 }  else if (!rideListed && addressValue.length() > 0 && seatCount != 0 && checkValidAddress(addressValue)) {
                     errorText.setText(" ");
-                    carData = createCar(carData);
-                    //e.addRideLocation(carData);
+                    FirebaseDatabase.getInstance().getReference("events").addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                            String key = "aee";
+                            final DatabaseReference ref;
+                            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            ref = database.getReference("events/" + key);
+                            ArrayList<String> peopleInCar = new ArrayList<>();
+                            RideInfo ri = new RideInfo(addressValue, peopleInCar, seatCount);
+                            List<RideInfo> rideInfo;
+                            GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
+                            rideInfo = dataSnapshot.child("rideLocation").getValue(t);
+                            if (rideInfo == null)
+                                rideInfo = new ArrayList<>();
+                            rideInfo.add(ri);
+                            ref.child("rideLocation").setValue(rideInfo);
+                        }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+                            try{
+
+                            }
+                            catch (Exception e) {return;}
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                     startActivity(new Intent(ListRideActivity.this, EventInfo.class));
                 } else {
                     errorText.setText("You've already listed your ride.");
@@ -148,9 +191,5 @@ public class ListRideActivity extends AppCompatActivity {
         return latlng;
     }
 
-    public ArrayList<String> createCar(ArrayList<String> car) {
-        car.add(addressValue);
-        car.add(seatCount + "");
-        return car;
-    }
+
 }

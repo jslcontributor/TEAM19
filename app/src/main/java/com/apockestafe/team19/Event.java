@@ -3,31 +3,25 @@ package com.apockestafe.team19;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
-
-import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Arrays;
-import java.util.Observable;
+import com.google.firebase.database.GenericTypeIndicator;
 
 
 public class Event extends Observable {
 
     private String title, date, time, location, description;
-    //private ArrayList<ArrayList<String>> rideLocation;
-    private String[] rideLocation;
+    private List<RideInfo> rideLocation;
+    //private String[] rideLocation;
     private final DatabaseReference ref;
     public boolean deleted;
 
     public Event(String title, String date, String time, String location,
-                 String description, String[] rideLocation) {
+                 String description, List<RideInfo> rideLocation) {
         this.title = title;
         this.date = date;
         this.time = time;
@@ -87,7 +81,8 @@ public class Event extends Observable {
             description = dataSnapshot.getValue(String.class);
         }
         if(key.equals("rideLocation")) {
-            //rideLocation = dataSnapshot.getValue(String[].class);
+            GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
+            rideLocation = dataSnapshot.getValue(t);
         }
     }
 
@@ -141,7 +136,7 @@ public class Event extends Observable {
         ref.child("description").setValue(description);
     }
 
-    public void changeRideLocation (String[] rideLocation) {
+    public void changeRideLocation (ArrayList<RideInfo> rideLocation) {
         if(deleted) {
             return;
         }
@@ -169,7 +164,7 @@ public class Event extends Observable {
         return description;
     }
 
-    public String[] getRideLocation() { return rideLocation; }
+    public List<RideInfo> getRideLocation() { return rideLocation; }
 
     public void addRideLocation(String[] rd) {
 

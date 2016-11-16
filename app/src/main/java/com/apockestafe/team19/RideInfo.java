@@ -1,0 +1,51 @@
+package com.apockestafe.team19;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by nsallaire on 11/15/16.
+ */
+
+public class RideInfo {
+
+    private String carAddress;
+    private List<String> peopleInCar;
+    private int numberSeatsInCar;
+
+    public RideInfo(String carAddress, List<String> peopleInCar, int numberSeatsInCar) {
+        this.carAddress = carAddress;
+        this.peopleInCar = peopleInCar;
+        this.numberSeatsInCar = numberSeatsInCar;
+    }
+
+    public RideInfo() {
+
+    }
+
+    public void setCarAddress(String cA) {
+        this.carAddress = cA;
+    }
+
+    public void setPeopleInCar(ArrayList<String> pic) {
+        this.peopleInCar = pic;
+    }
+
+    public void setNumberSeatsInCar(int nsic) {
+        this.numberSeatsInCar = nsic;
+    }
+
+    public String getCarAddress() {
+        return this.carAddress;
+    }
+
+    public List<String> getPeopleInCar() {
+        return this.peopleInCar;
+    }
+
+    public int getNumberSeatsInCar() {
+        return this.numberSeatsInCar;
+    }
+
+
+}

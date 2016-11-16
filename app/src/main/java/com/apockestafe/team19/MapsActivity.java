@@ -16,19 +16,29 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+
+import static android.R.attr.key;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Button backButton;
-    private Event e;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-
+    private String eventAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 finish();
             }
         });
+
     }
 
 
@@ -62,34 +73,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        final Context maps = getApplicationContext();
+        eventAddress = "Hey";
         mMap = googleMap;
 
-        LatLng rideLocation = new LatLng(32.881706, -117.232939);
-        LatLng eventLocation;
-        eventLocation = getLocationFromAddress(this, "3831 Van Dyke Ave, San Diego, CA, 92105");
-        String markerPicture = "car.ico";
+        final DatabaseReference ref;
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        String key = "aee";
+        ref = database.getReference("events/" + key);
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String ea = dataSnapshot.child("location").getValue(String.class);
+                setEventAddress(ea);
+                LatLng eventLocation;
+                //eventLocation = getLocationFromAddress(this, "3831 Van Dyke Ave, San Diego, CA, 92105");
+                eventLocation = getLocationFromAddress(maps, eventAddress);
+                float zoomLevel = (float) 17.0;
+                GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
+                List<RideInfo> rideInfo = dataSnapshot.child("rideLocation").getValue(t);
+                if (rideInfo != null) {
+                    for (int i = 0; i < rideInfo.size(); i++) {
+                        LatLng ll = getLocationFromAddress(maps, rideInfo.get(i).getCarAddress());
+                        if (ll != null)
+                            mMap.addMarker(new MarkerOptions().position(ll).title("Car Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.car)));
+                    }
+                }
 
 
+                mMap.addMarker(new MarkerOptions().position(eventLocation).title("Event Location"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, zoomLevel));
+            }
 
-        float zoomLevel = (float) 18.0;
-        String[] carAddresses = getCarLocations();
-//        ArrayList<String> cA = e.getRideLocation(); // Used in real life
-//        for (int j = 0; j < cA.size(); j++) {
-//            LatLng cL;
-//            cL = getLocationFromAddress(this, cA.get(j));
-//            mMap.addMarker(new MarkerOptions().position(cL).title("Car Location"));
-//        }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-        for (int i = 0; i < carAddresses.length; i++) {
-            LatLng carLocation;
-            carLocation = getLocationFromAddress(this, carAddresses[i]);
-            if (carLocation != null)
-                mMap.addMarker(new MarkerOptions().position(carLocation).title("Car Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.car)));
-
-        }
-        mMap.addMarker(new MarkerOptions().position(eventLocation).title("Event Location"));
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, zoomLevel));
+            }
+        });
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -127,12 +149,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return latlng;
     }
 
-    public String[] getCarLocations() {
-        String[] carAddresses = new String[3];
-        carAddresses[0] = "21 Edendale St, Ladera Ranch, CA, 92694";
-        carAddresses[1] = "3853 Van Dyke Ave, San Diego, CA, 92105";
-        carAddresses[2] = "2915 Estancia, San Clemente, CA, 92670";
-        return carAddresses;
+//    public String[] getCarLocations() {
+//        String[] carAddresses = new String[3];
+//        carAddresses[0] = "21 Edendale St, Ladera Ranch, CA, 92694";
+//        carAddresses[1] = "3831 Van Dyke Ave, San Diego, CA, 92105";
+//        carAddresses[2] = "2915 Estancia, San Clemente, CA, 92670";
+//        return carAddresses;
+//    }
+
+    public void setEventAddress(String ea) {
+        eventAddress = ea;
     }
 
 }

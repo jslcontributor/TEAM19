@@ -3,11 +3,10 @@ package com.apockestafe.team19;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -70,12 +69,13 @@ public class EventList implements Observer{
 
 
     private void addNewEvent(DataSnapshot data) {
+        GenericTypeIndicator<ArrayList<RideInfo>> t = new GenericTypeIndicator<ArrayList<RideInfo>>() {};
         Event event = new Event(data.child("title").getValue(String.class),
                 data.child("date").getValue(String.class),
                 data.child("time").getValue(String.class),
                 data.child("location").getValue(String.class),
                 data.child("description").getValue(String.class),
-                data.child("rideLocation").getValue(String[].class));
+                data.child("rideLocation").getValue(t));
         event.addObserver(this);
         add(event);
     }
