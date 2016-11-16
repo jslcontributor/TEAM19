@@ -1,8 +1,6 @@
 package com.apockestafe.team19;
-import com.apockestafe.team19.Event;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
@@ -18,9 +16,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.vision.barcode.Barcode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -88,7 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng carLocation;
             carLocation = getLocationFromAddress(this, carAddresses[i]);
             if (carLocation != null)
-                mMap.addMarker(new MarkerOptions().position(carLocation).title("Car Location")); //.icon(BitmapDescriptorFactory.fromFile("car.ico")));
+                mMap.addMarker(new MarkerOptions().position(carLocation).title("Car Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.car)));
 
         }
         mMap.addMarker(new MarkerOptions().position(eventLocation).title("Event Location"));
