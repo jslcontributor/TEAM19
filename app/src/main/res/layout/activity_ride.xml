@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_ride"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.apockestafe.team19.Ride">
+
+    <Button
+        android:text="Go Back to Map"
+        android:layout_width="match_parent"
+        android:layout_height="50.0dp"
+        android:id="@+id/backButton"
+        android:layout_weight="50" />
+
+    <TextView
+        android:text="Number of Seats Left:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/backButton"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="43dp"
+        android:id="@+id/seatsTextView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/seatsTextView"
+        android:layout_toEndOf="@+id/seatsTextView"
+        android:layout_marginStart="11dp"
+        android:id="@+id/seatsValue" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/errorText" />
+
+    <Button
+        android:text="Add To Car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addToCarButton"
+        android:layout_marginTop="36dp"
+        android:layout_below="@+id/errorText"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Remove From Car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/removeFromCarButton"
+        android:layout_marginTop="75dp"
+        android:layout_alignTop="@+id/addToCarButton"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

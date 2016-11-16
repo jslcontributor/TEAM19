@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         rides.add("2915 Estancia, San Clemente, CA, 92670");
         rides.add("21 Edendale St, Ladera Ranch, CA, 92694");
         String[] eventString = new String[] {"Leslie's Super Sweet 16 09/20"};
-        e = new Event("Leslie's Super Sweet 16", "11/15/16", "9:00pm", "3853 Van Dyke Ave, San Diego, CA, 92105", "Let's Party", rides);
+//        e = new Event("Leslie's Super Sweet 16", "11/15/16", "9:00pm", "3853 Van Dyke Ave, San Diego, CA, 92105", "Let's Party", rides);
         final List<String> listStringer = new ArrayList<String>(Arrays.asList(eventString));
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, eventString);
 

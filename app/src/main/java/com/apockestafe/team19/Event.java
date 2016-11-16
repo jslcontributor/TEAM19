@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public class Event {
 
     private String title, date, time, location, description;
-    private ArrayList<String> rideLocation;
+    private ArrayList<ArrayList<String>> rideLocation;
 
-    public Event(String title, String date, String time, String location, String description, ArrayList<String> rideLocation ) {
+    public Event(String title, String date, String time, String location, String description, ArrayList<ArrayList<String>> rideLocation ) {
         this.title = title;
         this.date = date;
         this.time = time;
@@ -39,10 +39,11 @@ public class Event {
         return description;
     }
 
-    public ArrayList<String> getRideLocation() { return rideLocation; }
+    public ArrayList<ArrayList<String>> getRideLocation() { return rideLocation; }
 
-    public void addRideLocation(String rl) {
-        rideLocation.add(rl);
+    public void addRideLocation(ArrayList<String> rd) {
+
+        rideLocation.add(rd);
     }
 }
 

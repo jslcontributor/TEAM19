@@ -16,6 +16,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -47,7 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MapsActivity.this, EventInfo.class));
+                finish();
             }
         });
     }
@@ -69,12 +70,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng rideLocation = new LatLng(32.881706, -117.232939);
         LatLng eventLocation;
-        eventLocation = getLocationFromAddress(this, "3860 Van Dyke Ave, San Diego, CA, 92105");
+        eventLocation = getLocationFromAddress(this, "3831 Van Dyke Ave, San Diego, CA, 92105");
         String markerPicture = "car.ico";
 
 
 
-        float zoomLevel = (float) 15.0;
+        float zoomLevel = (float) 18.0;
         String[] carAddresses = getCarLocations();
 //        ArrayList<String> cA = e.getRideLocation(); // Used in real life
 //        for (int j = 0; j < cA.size(); j++) {
@@ -93,6 +94,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(eventLocation).title("Event Location"));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, zoomLevel));
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if (marker.getTitle().equals("Car Location")) {
+                    startActivity(new Intent(MapsActivity.this, Ride.class));
+                }
+                return false;
+            }
+        });
     }
 
     public LatLng getLocationFromAddress(Context context,String strAddress) {

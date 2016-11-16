@@ -26,6 +26,7 @@ public class ListRideActivity extends AppCompatActivity {
     private boolean rideListed;
     private int seatCount;
     private String addressValue;
+    private ArrayList<String> carData;
     private Event e;
 
     @Override
@@ -61,7 +62,8 @@ public class ListRideActivity extends AppCompatActivity {
                     errorText.setText("Error. Enter your seat count.");
                 }  else if (!rideListed && addressValue.length() > 0 && seatCount != 0 && checkValidAddress(addressValue)) {
                     errorText.setText(" ");
-                    //e.addRideLocation(addressValue.getText().toString());
+                    carData = createCar(carData);
+                    //e.addRideLocation(carData);
                     startActivity(new Intent(ListRideActivity.this, EventInfo.class));
                 } else {
                     errorText.setText("You've already listed your ride.");
@@ -144,5 +146,11 @@ public class ListRideActivity extends AppCompatActivity {
         }
 
         return latlng;
+    }
+
+    public ArrayList<String> createCar(ArrayList<String> car) {
+        car.add(addressValue);
+        car.add(seatCount + "");
+        return car;
     }
 }
