@@ -1,13 +1,16 @@
 package com.apockestafe.team19;
 
+import java.util.ArrayList;
+
 /**
  * Created by JLee on 10/22/16.
  */
 public class Event {
 
-    private String title, date, time, location, description, rideLocation[];
+    private String title, date, time, location, description;
+    private ArrayList<String> rideLocation;
 
-    public Event(String title, String date, String time, String location, String description, String rideLocation[] ) {
+    public Event(String title, String date, String time, String location, String description, ArrayList<String> rideLocation ) {
         this.title = title;
         this.date = date;
         this.time = time;
@@ -36,8 +39,10 @@ public class Event {
         return description;
     }
 
-    public String[] getRideLocation() { return rideLocation; }
+    public ArrayList<String> getRideLocation() { return rideLocation; }
 
-
+    public void addRideLocation(String rl) {
+        rideLocation.add(rl);
+    }
 }
 

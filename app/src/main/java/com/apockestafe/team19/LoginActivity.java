@@ -1,5 +1,6 @@
 package com.apockestafe.team19;
 
+import com.apockestafe.team19.Event;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,11 +20,16 @@ public class LoginActivity extends AppCompatActivity {
 
     private ListView scrollList;
     private Button addbutton;
+    private Event e;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Firebase.setAndroidContext(this);
+        ArrayList<String> rides = new ArrayList<>();
+        rides.add("2915 Estancia, San Clemente, CA, 92670");
+        rides.add("21 Edendale St, Ladera Ranch, CA, 92694");
         String[] eventString = new String[] {"Leslie's Super Sweet 16 09/20"};
+        e = new Event("Leslie's Super Sweet 16", "11/15/16", "9:00pm", "3853 Van Dyke Ave, San Diego, CA, 92105", "Let's Party", rides);
         final List<String> listStringer = new ArrayList<String>(Arrays.asList(eventString));
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, eventString);
 

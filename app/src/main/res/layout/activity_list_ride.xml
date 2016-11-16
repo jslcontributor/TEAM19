@@ -30,41 +30,106 @@
         android:id="@+id/cancelRide" />
 
     <TextView
-        android:text="Address:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cancelRide"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="69dp"
+        android:id="@+id/errorText" />
+
+    <TextView
+        android:text="Number of Seats:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seatCount"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/submitRide" />
+
+    <TextView
+        android:text="Street Address:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/submitRide"
-        android:layout_marginTop="58dp"
-        android:id="@+id/address" />
+        android:layout_alignStart="@+id/seatCount"
+        android:layout_marginTop="37dp"
+        android:id="@+id/streetAddress" />
 
     <TextView
-        android:text="Number of Seats"
+        android:text="City:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="22dp"
+        android:id="@+id/city"
+        android:layout_below="@+id/streetAddress"
+        android:layout_alignStart="@+id/streetAddress" />
+
+    <TextView
+        android:text="State:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/city"
+        android:layout_alignStart="@+id/city"
+        android:layout_marginTop="25dp"
+        android:id="@+id/state" />
+
+    <TextView
+        android:text="Zipcode:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/state"
+        android:layout_alignStart="@+id/state"
+        android:layout_marginTop="24dp"
+        android:id="@+id/zipcode" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/streetAddressValue"
+        android:layout_alignBaseline="@+id/streetAddress"
+        android:layout_alignBottom="@+id/streetAddress"
+        android:layout_toEndOf="@+id/streetAddress" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/stateValue"
+        android:layout_below="@+id/cityValue"
+        android:layout_toEndOf="@+id/state" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:digits="0123456789"
+        android:inputType="numberDecimal"
+        android:ems="10"
         android:id="@+id/seatCountValue"
-        android:layout_below="@+id/address"
-        android:layout_alignEnd="@+id/submitRide"
-        android:layout_marginEnd="14dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_marginStart="20dp"
-        android:id="@+id/addressValue"
-        android:layout_alignBaseline="@+id/address"
-        android:layout_alignBottom="@+id/address"
-        android:layout_toEndOf="@+id/address" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/seatCountValue1"
-        android:layout_below="@+id/addressValue"
+        android:layout_alignBaseline="@+id/seatCount"
+        android:layout_alignBottom="@+id/seatCount"
         android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/zipcodeValue"
+        android:digits="0123456789"
+        android:inputType="numberDecimal"
+        android:layout_below="@+id/stateValue"
+        android:layout_toEndOf="@+id/zipcode"
+        android:layout_marginStart="11dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/cityValue"
+        android:layout_below="@+id/streetAddress"
+        android:layout_toEndOf="@+id/city" />
+
 </RelativeLayout>
+

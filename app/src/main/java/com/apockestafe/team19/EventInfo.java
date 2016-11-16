@@ -41,5 +41,6 @@ public class EventInfo extends AppCompatActivity {
                 startActivity(new Intent(EventInfo.this, LoginActivity.class));
 
             }
-        });    }
+        });
+    }
 }

@@ -1,6 +1,5 @@
 package com.apockestafe.team19;
-
-
+import com.apockestafe.team19.Event;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -20,12 +19,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Button backButton;
+    private Event e;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -75,10 +76,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         float zoomLevel = (float) 15.0;
         String[] carAddresses = getCarLocations();
+//        ArrayList<String> cA = e.getRideLocation(); // Used in real life
+//        for (int j = 0; j < cA.size(); j++) {
+//            LatLng cL;
+//            cL = getLocationFromAddress(this, cA.get(j));
+//            mMap.addMarker(new MarkerOptions().position(cL).title("Car Location"));
+//        }
+
         for (int i = 0; i < carAddresses.length; i++) {
             LatLng carLocation;
             carLocation = getLocationFromAddress(this, carAddresses[i]);
-            mMap.addMarker(new MarkerOptions().position(carLocation).title("Car Location")); //.icon(BitmapDescriptorFactory.fromFile("car.ico")));
+            if (carLocation != null)
+                mMap.addMarker(new MarkerOptions().position(carLocation).title("Car Location")); //.icon(BitmapDescriptorFactory.fromFile("car.ico")));
 
         }
         mMap.addMarker(new MarkerOptions().position(eventLocation).title("Event Location"));
