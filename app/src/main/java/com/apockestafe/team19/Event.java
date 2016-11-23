@@ -36,11 +36,14 @@ public class Event extends Observable {
     private  DatabaseReference ref;
     private  FirebaseDatabase database;
     public boolean deleted;
-    public int counter;
+    public volatile boolean added = false;
+  //  public volatile boolean worked = false;
+    public long counter;
     //private final AtomicInteger count;
 
     public Event(String title, String date, String time, String location,
                  String description, List<RideInfo> rideLocation) {
+       // setCount();
 
         //count = new AtomicInteger();
 
@@ -94,16 +97,37 @@ public class Event extends Observable {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("TEAM19");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            boolean added = false;
+            //boolean added = false;
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                long count = (long) dataSnapshot.child("counter").getValue();
-                count++;
-                String s = Long.toString(count);
-                Log.d("CounterVariable", s);
-                System.out.println("Count: " + s);
-                addHelper(s, count);
+                if(added){
+                    return;
+                }
+                long count;
+                if(dataSnapshot.child("counters").child("counter").getValue() == null) {
+                    count = -1;
+                }
+                else{
+                    count = (long) dataSnapshot.child("counters").child("counter").getValue();
+                }
+             ////  // long count = (long) dataSnapshot.child("counters").child("counter").getValue();
+                //count++;
+              //  String s = Long.toString(count);
+            //    Log.d("CounterVariable", s);
+             //   System.out.println("Count: " + s);
+                if(!added){
+                  //  added = true;
+                    count++;
+                    String s = Long.toString(count);
+                    boolean returnVal = addHelper(s, dataSnapshot, count);
+                    added = true;
+                    if(returnVal) {
+                        addHelper2(count);
+                    }
+                }
+             //   dataSnapshot.child("counters").child("counter").getRef().setValue(count);
+                //addHelper2(count);
 
             }
 
@@ -112,12 +136,34 @@ public class Event extends Observable {
 
             }
         });
+     //   setCount();
     }
 
-    public void addHelper(String s, long count) {
-        ref.child("events").child(""+s).setValue(this);
+    public boolean addHelper(String s, DataSnapshot ds, long count) {
+        if(added){
+            return false;
+        }
+        added = true;
+        count = count -1;
+        String d = Long.toString(count);
+        if(
+                ds.child("events").child(d).child("title").getValue() != null &&
+                ((String)ds.child("events").child(d).child("title").getValue()).equals(this.title))
+        {
+           return false;
+        }
+        else{
+            ref.child("events").child(""+s).setValue(this);
+            return true;
+            //addHelper2(count++);
+        }
+       // ref.child("events").child(""+s).setValue(this);
+      //  counter = count;
     }
 
+    public void addHelper2(long count) {
+        ref.child("counters").child("counter").setValue(count);
+    }/*
     public void setCount() {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("TEAM19");
@@ -125,9 +171,18 @@ public class Event extends Observable {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                long count = (long) dataSnapshot.child("counter").child("counter").getValue();
+                long count;
+                if(dataSnapshot.child("counters").child("counter").getValue() == null) {
+                    count = -1;
+                }
+                else{
+                    count = (long) dataSnapshot.child("counters").child("counter").getValue();
+                }
                 count++;
-                ref.child("counter").child("counter").setValue(count);
+                counter = count;
+                addHelper2(counter);
+                //added = true;
+               // ref.child("counters").child("counter").setValue(count);
             }
 
             @Override
@@ -135,7 +190,7 @@ public class Event extends Observable {
 
             }
         });
-    }
+    }*/
 
     public void remove() {
         ref.setValue(null);

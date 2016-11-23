@@ -39,9 +39,9 @@ public class EventActivity extends AppCompatActivity {
                 Event event = new Event(title.getText().toString(),
                         date.getText().toString(), time.getText().toString(),
                         location.getText().toString(), description.getText().toString(),
-                        null);
+                         null);
                 event.add();
-                event.setCount();
+              //  event.setCount();
                 finish();
                 //startActivity(new Intent(EventActivity.this, LoginActivity.class));
             }
