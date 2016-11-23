@@ -48,13 +48,10 @@
         android:layout_marginStart="55dp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
+        android:layout_width="300.0dp"
         android:layout_height="200.0dp"
-        android:layout_below="@+id/backButton"
-        android:layout_toEndOf="@+id/backButton"
-        android:layout_marginTop="83dp"
         android:textAlignment="center"
-        android:id="@+id/eventDescription" />
+        android:id="@+id/eventDescription"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

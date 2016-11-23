@@ -40,7 +40,7 @@ public class EventInfo extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String description = (String) dataSnapshot.child("events").child(s).child("description").getValue();
-                eventDescription.setText(description);
+                eventDescription.setText("Event Description\n" + description);
             }
 
             @Override

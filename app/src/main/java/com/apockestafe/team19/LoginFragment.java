@@ -127,7 +127,8 @@ public class LoginFragment extends Fragment /*this extends might needs
         View view = inflater.inflate(R.layout.activity_signin, container, false);
 
         loginButton = (LoginButton) view.findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
+        loginButton.setPublishPermissions(Arrays.asList("publish_actions", "email", "public_profile", "user_status"));
+//        loginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_status"));
         loginButton.setFragment(this);
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override

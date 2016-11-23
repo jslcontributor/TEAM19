@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        settingsButton = (Button) findViewById(R.id.button2);
+        settingsButton = (Button) findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -29,6 +29,15 @@ class SharedPreferencesEditor {
         editor.apply();
     }
 
+    public void addFirstName(String name) {
+        editor.putString("myFirstName", name);
+        editor.apply();
+    }
+
+    public void addLastName(String name) {
+        editor.putString("myLastName", name);
+        editor.apply();
+    }
 
 
     public void addMyEmail(String email) {
@@ -79,6 +88,15 @@ class SharedPreferencesEditor {
 
     public Set<String> getEvents() {
 
-        return sharedPreferences.getStringSet("myEvents", null); }
+        return sharedPreferences.getStringSet("myEvents", null);
+    }
+
+    public String getFirstName() {
+        return sharedPreferences.getString("myFirstName", "");
+    }
+
+    public String getLastName() {
+        return sharedPreferences.getString("myLastName", "");
+    }
 
 }

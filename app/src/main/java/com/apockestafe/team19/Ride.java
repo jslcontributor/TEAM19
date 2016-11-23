@@ -31,8 +31,6 @@ public class Ride extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,13 +104,13 @@ public class Ride extends AppCompatActivity {
                                             inCar = true;
                                         }
                                     }
-                                    System.out.println("Value of inCar: " + inCar);
+//                                    System.out.println("Value of inCar: " + inCar);
                                     if (!inCar && !inAnotherCar) {
-                                        System.out.println("User added to car: " + editor.getMyEmail());
+//                                        System.out.println("User added to car: " + editor.getMyEmail());
                                         ri.getPeopleInCar().add(editor.getMyEmail());
                                         addPersonToList(editor.getMyEmail());
                                         rideCount = ri.getNumberSeatsInCar();
-                                        System.out.println("SEAT COUNT: " + rideCount);
+//                                        System.out.println("SEAT COUNT: " + rideCount);
                                         rideCount--;
                                         ri.setNumberSeatsInCar(rideCount);
                                         seatsValue.setText(ri.getNumberSeatsInCar() + "");
