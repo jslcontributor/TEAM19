@@ -8,8 +8,11 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.List;
+import java.util.List;
+import android.content.Context;
 
 import android.util.Log;
+import android.content.SharedPreferences;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +27,10 @@ import java.util.Arrays;
 import java.util.Observable;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static android.os.SystemClock.sleep;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static android.content.Context.MODE_PRIVATE;
 import static android.os.SystemClock.sleep;
 
 
