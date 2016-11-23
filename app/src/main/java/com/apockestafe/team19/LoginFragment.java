@@ -1,5 +1,6 @@
 package com.apockestafe.team19;
 
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.camera2.params.Face;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
@@ -31,8 +34,12 @@ import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.facebook.internal.FacebookDialogFragment.TAG;
 
 public class LoginFragment extends Fragment /*this extends might needs
@@ -42,6 +49,9 @@ public class LoginFragment extends Fragment /*this extends might needs
     public AccessTokenTracker mAccessTokenTracker;
     public ProfileTracker mProfileTracker;
     private FirebaseAuth mAuth;
+    private SharedPreferencesEditor editor;
+
+
     //private UiLifecycleHelper uiHelper;
     LoginButton loginButton;
 
@@ -75,6 +85,7 @@ public class LoginFragment extends Fragment /*this extends might needs
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth.getInstance();
+
         //if(loginr)
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
 
@@ -103,6 +114,7 @@ public class LoginFragment extends Fragment /*this extends might needs
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_signin, container, false);
+
         loginButton = (LoginButton) view.findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
         loginButton.setFragment(this);
@@ -110,8 +122,32 @@ public class LoginFragment extends Fragment /*this extends might needs
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
+
+
 //                handleFacebookAccessToken(loginResult.getAccessToken());
                 String tokener = loginResult.getAccessToken().getToken();
+
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.v("LoginActivity", response.toString());
+
+                                // Application code
+                                try {
+                                    String email = object.getString("email");
+                                    editor = new SharedPreferencesEditor(getActivity().getSharedPreferences("login", MODE_PRIVATE));
+                                    editor.addMyEmail(email);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "email");
+                request.setParameters(parameters);
+                request.executeAsync();
 
                 openNextActivity();
             }

@@ -14,6 +14,8 @@ import android.content.Intent;
 //import com.firebase.client.Firebase;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -27,6 +29,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -45,12 +50,20 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private final ArrayList<String> aList = new ArrayList<>();
     private String email;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         auth = FirebaseAuth.getInstance();
+      /*  user = FirebaseAuth.getInstance().getCurrentUser();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+            }
+        };*/
         /*
         try {
             System.out.println(AccessToken.getCurrentAccessToken().getToken());
@@ -58,12 +71,14 @@ public class MainActivity extends AppCompatActivity {
         catch(NullPointerException e) {
             System.out.println("aeljaejla");
         }*/
-        editor = new SharedPreferencesEditor(getSharedPreferences("login",MODE_PRIVATE));
+        editor = new SharedPreferencesEditor(getSharedPreferences("login", MODE_PRIVATE));
 
 
-        if(editor.getMyEmail() != null && editor.getMyEmail() != ""){
+        if(editor.getMyEmail() == null || editor.getMyEmail() == ""){
             String token = AccessToken.getCurrentAccessToken().getToken();
             handleFacebookAccessToken(token);
+//            email = auth.getCurrentUser().getEmail();
+//            editor.addMyEmail(email);
         }
         //handleFacebookAccessToken(token);
         setContentView(R.layout.activity_main);
@@ -104,14 +119,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleFacebookAccessToken(String token) {
         Log.d("herehere", "handleFacebookAccessToken:" + token);
+//        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+//                new GraphRequest.GraphJSONObjectCallback() {
+//                    @Override
+//                    public void onCompleted(JSONObject object, GraphResponse response) {
+//                        try{
+//                            String email = object.getString("email");
+//                            editor.addMyEmail(email);
+//                            System.out.println("login Email: " + email);
+//                        }
+//                        catch(JSONException e){}
+//                    }
+//                });
+//        request.executeAsync();
         AuthCredential credential = FacebookAuthProvider.getCredential(token);
         auth.signInWithCredential(credential).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                email = auth.getCurrentUser().getEmail();
+             /*   email = auth.getCurrentUser().getEmail();
                 if(editor.getMyEmail() == null || editor.getMyEmail() == "") {
                     editor.addMyEmail(email);
-                }
+                }*/
                 Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
                 if(!task.isSuccessful()) {
                     Log.w(TAG, "signInWithCredential", task.getException());
@@ -122,12 +150,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void listAdapter () {
         final String email = editor.getMyEmail();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(
-                "");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("");
         ref.orderByChild("events").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                eventList = new EventList(email, dataSnapshot);
+                eventList = new EventList(dataSnapshot);
                 listAdapterHelper();
                 adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, aList);
                 scrollList.setAdapter(adapter);

@@ -13,7 +13,6 @@ import java.util.Observer;
 
 public class EventList implements Observer{
     private final ArrayList<Event> list;
-    private final String userEmail;
 
     @Override
     public void update (Observable observable, Object data) {
@@ -24,15 +23,15 @@ public class EventList implements Observer{
         }
     }
 
-    public EventList(String email, DataSnapshot dataSnapshot) {
+    public EventList(DataSnapshot dataSnapshot) {
         list = new ArrayList<>();
-        userEmail = email.replaceAll("\\.", "@");
-        try{
-            dataSnapshot = dataSnapshot.child(userEmail);
-        }
-        catch (Exception e) {
-            return;
-        }
+//        userEmail = email.replaceAll("\\.", "@");
+//        try{
+//            dataSnapshot = dataSnapshot.child(userEmail);
+//        }
+//        catch (Exception e) {
+//            return;
+//        }
         for(DataSnapshot data : dataSnapshot.child("events").getChildren()) {
             addNewEvent(data);
         }

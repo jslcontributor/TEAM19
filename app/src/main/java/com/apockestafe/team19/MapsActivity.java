@@ -41,6 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button backButton;
     private String eventAddress;
     private SharedPreferencesEditor editor;
+    private String carAddress;
 
 
     @Override
@@ -101,7 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     for (int i = 0; i < rideInfo.size(); i++) {
                         LatLng ll = getLocationFromAddress(maps, rideInfo.get(i).getCarAddress());
                         if (ll != null) {
-                            mMap.addMarker(new MarkerOptions().position(ll).title("Car Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.car)));
+                            mMap.addMarker(new MarkerOptions().position(ll).title(rideInfo.get(i).getCarAddress()).icon(BitmapDescriptorFactory.fromResource(R.drawable.car)));
 //                            rideInfo.get(i).setLatlng(ll);
 //                            ref.child("rideLocation").setValue(rideInfo);
                         }
@@ -122,10 +123,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (marker.getTitle().equals("Car Location")) {
-                    editor = new SharedPreferencesEditor(getSharedPreferences("marker", MODE_PRIVATE));
-                    editor.addMarker(marker.getPosition());
-                    startActivity(new Intent(MapsActivity.this, Ride.class));
+                if (!(marker.getTitle().equals("Event Location"))) {
+                editor = new SharedPreferencesEditor(getSharedPreferences("marker", MODE_PRIVATE));
+                editor.addMarker(marker.getPosition());
+                Intent intent = new Intent(MapsActivity.this, Ride.class);
+                intent.putExtra("Marker Name", marker.getTitle());
+                startActivity(intent);
                 }
                 return false;
             }

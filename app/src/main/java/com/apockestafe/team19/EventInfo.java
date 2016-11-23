@@ -39,7 +39,7 @@ public class EventInfo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //startActivity(new Intent(EventInfo.this, LoginActivity.class));
-                finish();
+                startActivity(new Intent(EventInfo.this, MainActivity.class));
             }
         });
     }
