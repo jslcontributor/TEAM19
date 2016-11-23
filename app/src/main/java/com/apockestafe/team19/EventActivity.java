@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
 
+import static android.os.SystemClock.sleep;
+
 public class EventActivity extends AppCompatActivity {
 
     private EditText title, date, time, location, description;
@@ -29,6 +31,7 @@ public class EventActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(EventActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -42,6 +45,8 @@ public class EventActivity extends AppCompatActivity {
                          null);
                 event.add();
               //  event.setCount();
+                sleep(100);
+                startActivity(new Intent(EventActivity.this, MainActivity.class));
                 finish();
                 //startActivity(new Intent(EventActivity.this, LoginActivity.class));
             }

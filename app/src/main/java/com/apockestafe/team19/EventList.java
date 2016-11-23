@@ -34,7 +34,7 @@ public class EventList implements Observer{
         catch (Exception e) {
             return;
         }*/
-        for(DataSnapshot data : dataSnapshot.child("TEAM19").child("events").getChildren()) {
+        for(DataSnapshot data : dataSnapshot.child("events").getChildren()) {
             addNewEvent(data);
         }
         FirebaseDatabase.getInstance().getReference("TEAM19/events").addChildEventListener(new ChildEventListener() {
@@ -84,7 +84,7 @@ public class EventList implements Observer{
     public boolean add(Event event) {
         if(find(event.getTitle()) == list.size()) {
             list.add(event);
-            event.add();
+//            event.add();
             return true;
         }
         else{

@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, EventActivity.class));
+                finish();
             }
         });
 
@@ -149,13 +150,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void listAdapter () {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(
-                "");
-        ref.orderByChild("TEAM19").addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("TEAM19");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                eventList = new EventList(dataSnapshot);
-                listAdapterHelper();
+//                eventList = new EventList(dataSnapshot);
+//                listAdapterHelper();
+                for (DataSnapshot data : dataSnapshot.child("events").getChildren()) {
+                    String title = (String) data.child("title").getValue();
+                    String date = (String) data.child("date").getValue();
+                    String eventDisplayName = title + " | " + date;
+                    aList.add(eventDisplayName);
+                }
                 adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, aList);
                 scrollList.setAdapter(adapter);
 
@@ -169,14 +175,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void listAdapterHelper () {
-        int i;
-        int length = eventList.size();
-        for(i=0; i<length; i++) {
-            String title = eventList.get(i).getTitle();
-            String date = eventList.get(i).getDate();
-            String eventDisplayName = title + " | " + date;
-            aList.add(eventDisplayName);
-        }
-    }
+//    private void listAdapterHelper () {
+//        int i;
+//        int length = eventList.size();
+//        for(i=0; i<length; i++) {
+//            String title = eventList.get(i).getTitle();
+//            String date = eventList.get(i).getDate();
+//
+//        }
+//    }
 }
