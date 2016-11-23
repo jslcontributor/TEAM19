@@ -41,7 +41,7 @@ public class EventActivity extends AppCompatActivity {
                         location.getText().toString(), description.getText().toString(),
                         null);
                 event.add();
-
+                event.setCount();
                 finish();
                 //startActivity(new Intent(EventActivity.this, LoginActivity.class));
             }

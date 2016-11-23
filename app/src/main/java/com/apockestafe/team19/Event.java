@@ -3,6 +3,7 @@ package com.apockestafe.team19;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -21,6 +22,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.Observable;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static android.os.SystemClock.sleep;
 
 
 public class Event extends Observable {
@@ -29,16 +33,29 @@ public class Event extends Observable {
     private List<RideInfo> rideLocation;
     //private ArrayList<ArrayList<String>> rideLocation;
     //private String[] rideLocation;
-    private final DatabaseReference ref;
+    private  DatabaseReference ref;
+    private  FirebaseDatabase database;
     public boolean deleted;
-    public long counter;
+    public int counter;
+    //private final AtomicInteger count;
 
     public Event(String title, String date, String time, String location,
                  String description, List<RideInfo> rideLocation) {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        //count = new AtomicInteger();
+
         //String key = ServerValue.TIMESTAMP.toString();
         // String key;
-        setCounter();
+     //   System.out.println("justin"+count.get());
+      //  setCounter();
+       /* Thread back = new Thread() {
+            public void run() {
+                setCounter();
+            }
+        };
+        back.start();*/
+       // setCounter();
+
         this.title = title;
         this.date = date;
         this.time = time;
@@ -46,36 +63,6 @@ public class Event extends Observable {
         this.description = description;
         this.rideLocation = rideLocation;
 
-
-        ref = database.getReference("TEAM19/events/" + String.valueOf(counter));
-        ref.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                changeData(dataSnapshot);
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                deleted = true;
-                notifyObservers();
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
     }
 
@@ -103,8 +90,51 @@ public class Event extends Observable {
     }
 
     public void add() {
-        ref.setValue(this);
+        //  System.out.println("1234" + count.get());
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference("TEAM19");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            boolean added = false;
 
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long count = (long) dataSnapshot.child("counter").getValue();
+                count++;
+                String s = Long.toString(count);
+                Log.d("CounterVariable", s);
+                System.out.println("Count: " + s);
+                addHelper(s, count);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void addHelper(String s, long count) {
+        ref.child("events").child(""+s).setValue(this);
+    }
+
+    public void setCount() {
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference("TEAM19");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long count = (long) dataSnapshot.child("counter").child("counter").getValue();
+                count++;
+                ref.child("counter").child("counter").setValue(count);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void remove() {
@@ -185,38 +215,44 @@ public class Event extends Observable {
 
     public void addRideLocation(String[] rd) {
 
-        //rideLocation.add(rd);
     }
-
-    public boolean equals (Object comparable) {return false;} //implement if need comparator
+  //  public boolean equals(Object comparable) {return false;} //implement if need comparator
 
     public String toString() { //implement for event display in listview?
         return null;
     }
 
-    public void setCounter() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference ref2 = database.getReference("TEAM19");
-        ref2.child("counter").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() == null) {
-                    counter = 0;
-                }
-                else{
-                    counter = (long)dataSnapshot.getValue();
-                    counter++;
-                    ref2.child("counter").setValue(counter);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
+//    public void setCounter() {
+//        System.out.println("999"+count.get());
+//        ref.child("events").child(String.valueOf(count.get())).addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                changeData(dataSnapshot);
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                deleted = true;
+//                notifyObservers();
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
 }
 
