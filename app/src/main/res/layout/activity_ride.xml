@@ -7,54 +7,77 @@
 
     tools:context="com.apockestafe.team19.Ride">
 
+    <TextView
+        android:text="Number of Seats Left:"
+        android:layout_height="20.0dp"
+        android:id="@+id/seatsTextView"
+        android:layout_width="150.0dp"
+        android:layout_marginTop="47dp"
+        android:layout_below="@+id/backButton"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="18dp" />
+
+    <TextView
+        android:layout_width="20.0dp"
+        android:layout_height="20.0dp"
+        android:id="@+id/seatsValue"
+        android:text="                    "
+        android:layout_alignBaseline="@+id/seatsTextView"
+        android:layout_alignBottom="@+id/seatsTextView"
+        android:layout_toEndOf="@+id/seatsTextView" />
+
     <Button
         android:text="Go Back to Map"
         android:layout_width="match_parent"
         android:layout_height="50.0dp"
         android:id="@+id/backButton"
-        android:layout_weight="50" />
-
-    <TextView
-        android:text="Number of Seats Left:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/backButton"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="43dp"
-        android:id="@+id/seatsTextView" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/seatsTextView"
-        android:layout_toEndOf="@+id/seatsTextView"
-        android:layout_marginStart="11dp"
-        android:id="@+id/seatsValue" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/errorText" />
-
-    <Button
-        android:text="Add To Car"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addToCarButton"
-        android:layout_marginTop="36dp"
-        android:layout_below="@+id/errorText"
+        android:layout_weight="50"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Friends Currently Signed Up"
+        android:layout_width="wrap_content"
+        android:layout_height="20.0dp"
+        android:id="@+id/words"
+        android:layout_below="@+id/seatsTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="175.0dp"
+        android:id="@+id/listViewOfPeople"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:text="Remove From Car"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/removeFromCarButton"
-        android:layout_marginTop="75dp"
-        android:layout_alignTop="@+id/addToCarButton"
+        android:layout_width="110.0dp"
+        android:layout_height="55.0dp"
+        android:layout_below="@+id/errorText"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="13dp" />
+
+    <Button
+        android:text="Add To Car"
+        android:id="@+id/addToCarButton"
+        android:layout_width="110.0dp"
+        android:layout_height="55.0dp"
+        android:layout_below="@+id/errorText"
+        android:layout_alignStart="@+id/seatsTextView"
+        android:layout_marginTop="13dp" />
+
+    <TextView
+        android:id="@+id/errorText"
+        android:text=""
+        android:layout_width="300.0dp"
+        android:layout_height="25.0dp"
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/listViewOfPeople"
+        android:textAlignment="center"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
