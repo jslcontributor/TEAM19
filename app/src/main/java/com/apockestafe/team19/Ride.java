@@ -260,7 +260,7 @@ public class Ride extends AppCompatActivity {
             List<String> people = ri.getPeopleInCar();
             if (people != null)
                 for (int j = 0; j < people.size(); j++) {
-                    if (people.get(i).equals(person) && !(address.equals(ri.getCarAddress())))
+                    if (people.get(j).equals(person) && !(address.equals(ri.getCarAddress())))
                         return true;
             }
         }

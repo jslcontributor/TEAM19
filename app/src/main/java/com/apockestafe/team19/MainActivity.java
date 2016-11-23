@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
                     new AppLinkData.CompletionHandler() {
                         @Override
                         public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
+                            try {
+                                if(appLinkData.getPromotionCode() == null)
+                                    return;
+                            } catch(NullPointerException e) { return; }
                             String promoCode = appLinkData.getPromotionCode();
                             if(promoCode != null) {
                                 //put it in sharedpref
