@@ -38,6 +38,7 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import bolts.AppLinks;
@@ -68,24 +69,39 @@ public class MainActivity extends AppCompatActivity {
         contextOfApplication = getApplicationContext();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
+        editor = new SharedPreferencesEditor(getSharedPreferences("login", MODE_PRIVATE));
         Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
         if(targetUrl != null) {
             token = getIntent().getExtras().getString("fb_access_token");
             AppLinkData ald = AppLinkData.createFromAlApplinkData(getIntent());
             String promoCode = ald.getPromotionCode();
-            if(promoCode != null) {
-                //put it in sharedpref.
+            Set<String> set = editor.getEvents();
+            ArrayList<String> eventNumbers = new ArrayList<>();
+            if(set != null) {
+                eventNumbers.addAll(set);
             }
+            eventNumbers.add(promoCode);
+            editor.addEvents(eventNumbers);
         }
         else{
             AppLinkData.fetchDeferredAppLinkData(getApplicationContext(),
                     new AppLinkData.CompletionHandler() {
                         @Override
                         public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
-                            String promoCode = appLinkData.getPromotionCode();
-                            if(promoCode != null) {
-                                //put it in sharedpref
+                            try{
+                                if(appLinkData.getPromotionCode() == null) {
+                                    return;
+                                }
                             }
+                            catch(NullPointerException e) {return;}
+                            String promoCode = appLinkData.getPromotionCode();
+                            Set<String> set = editor.getEvents();
+                            ArrayList<String> eventNumbers = new ArrayList<>();
+                            if(set!=null){
+                                eventNumbers.addAll(set);
+                            }
+                            eventNumbers.add(promoCode);
+                            editor.addEvents(eventNumbers);
                         }
                     });
         }
@@ -104,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         catch(NullPointerException e) {
             System.out.println("aeljaejla");
         }*/
-        editor = new SharedPreferencesEditor(getSharedPreferences("login", MODE_PRIVATE));
+
 
 
         if(editor.getMyEmail() == null || editor.getMyEmail() == ""){
