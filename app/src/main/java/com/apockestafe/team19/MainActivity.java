@@ -149,15 +149,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void listAdapter () {
-        final String email = editor.getMyEmail();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("");
-        ref.orderByChild("events").addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(
+                "");
+        ref.orderByChild("TEAM19").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 eventList = new EventList(dataSnapshot);
                 listAdapterHelper();
                 adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, aList);
                 scrollList.setAdapter(adapter);
+
             }
 
             @Override

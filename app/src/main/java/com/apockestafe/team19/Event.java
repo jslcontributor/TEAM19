@@ -2,36 +2,52 @@ package com.apockestafe.team19;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
+import java.util.List;
+
+import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Arrays;
+import java.util.Observable;
 
 
 public class Event extends Observable {
 
     private String title, date, time, location, description;
     private List<RideInfo> rideLocation;
+    //private ArrayList<ArrayList<String>> rideLocation;
     //private String[] rideLocation;
     private final DatabaseReference ref;
     public boolean deleted;
+    public long counter;
 
     public Event(String title, String date, String time, String location,
                  String description, List<RideInfo> rideLocation) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //String key = ServerValue.TIMESTAMP.toString();
+        // String key;
+        setCounter();
         this.title = title;
         this.date = date;
         this.time = time;
         this.location = location;
         this.description = description;
         this.rideLocation = rideLocation;
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //String key = ServerValue.TIMESTAMP.toString();
-        String key = "aee";
-        ref = database.getReference("events/" + key);
+
+
+        ref = database.getReference("TEAM19/events/" + String.valueOf(counter));
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -88,6 +104,7 @@ public class Event extends Observable {
 
     public void add() {
         ref.setValue(this);
+
     }
 
     public void remove() {
@@ -176,5 +193,30 @@ public class Event extends Observable {
     public String toString() { //implement for event display in listview?
         return null;
     }
+
+    public void setCounter() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference ref2 = database.getReference("TEAM19");
+        ref2.child("counter").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() == null) {
+                    counter = 0;
+                }
+                else{
+                    counter = (long)dataSnapshot.getValue();
+                    counter++;
+                    ref2.child("counter").setValue(counter);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
 }
 

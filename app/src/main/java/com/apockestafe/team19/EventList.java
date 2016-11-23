@@ -3,10 +3,12 @@ package com.apockestafe.team19;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -25,17 +27,17 @@ public class EventList implements Observer{
 
     public EventList(DataSnapshot dataSnapshot) {
         list = new ArrayList<>();
-//        userEmail = email.replaceAll("\\.", "@");
-//        try{
-//            dataSnapshot = dataSnapshot.child(userEmail);
-//        }
-//        catch (Exception e) {
-//            return;
-//        }
+       /* userEmail = email.replaceAll("\\.", "@");
+        try{
+            dataSnapshot = dataSnapshot.child(userEmail);
+        }
+        catch (Exception e) {
+            return;
+        }*/
         for(DataSnapshot data : dataSnapshot.child("events").getChildren()) {
             addNewEvent(data);
         }
-        FirebaseDatabase.getInstance().getReference("events").addChildEventListener(new ChildEventListener() {
+        FirebaseDatabase.getInstance().getReference("TEAM19/events").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 addNewEvent(dataSnapshot);
