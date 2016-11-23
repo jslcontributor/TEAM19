@@ -49,16 +49,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        final String key = getIntent().getStringExtra("eventNumber");
+
         backButton = (Button) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent i = new Intent(MapsActivity.this, EventInfo.class);
+                i.putExtra("eventNumber", key);
+                startActivity(i);
             }
         });
 
@@ -84,7 +89,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final DatabaseReference ref;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         String key = "aee";
-        ref = database.getReference("events/" + key);
+        final String s = getIntent().getStringExtra("eventNumber");
+
+        ref = database.getReference("TEAM19/events/" + s);
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -127,7 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 editor = new SharedPreferencesEditor(getSharedPreferences("marker", MODE_PRIVATE));
                 editor.addMarker(marker.getPosition());
                 Intent intent = new Intent(MapsActivity.this, Ride.class);
-                intent.putExtra("Marker Name", marker.getTitle());
+                intent.putExtra("Marker Name", marker.getTitle() + ":" + s);
                 startActivity(intent);
                 }
                 return false;

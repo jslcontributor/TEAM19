@@ -1,5 +1,6 @@
 package com.apockestafe.team19;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -37,11 +38,14 @@ public class Ride extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride);
 
+        final String val = getIntent().getStringExtra("Marker Name");
+        String[] split = val.split(":");
+        final String s = split[0];
+        final String key = split[1];
+
         seatsValue = (TextView) findViewById(R.id.seatsValue);
         errorText = (TextView) findViewById(R.id.errorText);
         listViewText = (TextView) findViewById(R.id.words);
-        final String s = getIntent().getStringExtra("Marker Name");
-        errorText.setText(s);
 
         scrollList = (ListView) findViewById(R.id.listViewOfPeople);
 
@@ -49,15 +53,22 @@ public class Ride extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent i = new Intent(Ride.this, MapsActivity.class);
+                i.putExtra("eventNumber", key);
+                startActivity(i);
             }
         });
 
         editor = new SharedPreferencesEditor(getSharedPreferences("login", MODE_PRIVATE));
         final DatabaseReference ref;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String key = "aee";
-        ref = database.getReference("events/" + key);
+
+        System.out.println("MARKER NAME: " + s);
+        System.out.println("KEY FOR RIDE.JAVA: " + key);
+//        String key = "aee";
+        errorText.setText(s);
+
+        ref = database.getReference("TEAM19/events/" + key);
 
         addToCarButton = (Button) findViewById(R.id.addToCarButton);
         addToCarButton.setOnClickListener(new View.OnClickListener() {
@@ -71,11 +82,11 @@ public class Ride extends AppCompatActivity {
                         GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
                         List<RideInfo> rideInfo = dataSnapshot.child("rideLocation").getValue(t);
 
-                        String markerAddress = editor.getMarker();
+//                        String markerAddress = editor.getMarker();
     //                    System.out.println("MARKER ADDRESS: " + markerAddress);
                         // Need to get street address or convert to LatLng
                         for (int i = 0; i < rideInfo.size(); i++) {
-    //                        System.out.println("Ride Address: " + rideInfo.get(i).getCarAddress());
+
 
                             if (rideInfo.get(i).getCarAddress().equals(s)) {
                                 RideInfo ri = rideInfo.get(i);
@@ -137,8 +148,8 @@ public class Ride extends AppCompatActivity {
                 // if already signed up for ride, do
                 final DatabaseReference ref;
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                String key = "aee";
-                ref = database.getReference("events/" + key);
+//                String key = "aee";
+                ref = database.getReference("TEAM19/events/" + key);
 
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -190,15 +201,17 @@ public class Ride extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
                 List<RideInfo> rideInfo = dataSnapshot.child("rideLocation").getValue(t);
-                for (int i = 0; i < rideInfo.size(); i++) {
-                    if (rideInfo.get(i).getCarAddress().equals(s)) {
-                        rideCount = rideInfo.get(i).getNumberSeatsInCar();
-                        if (rideInfo.get(i).getPeopleInCar() != null)
-                            createListOfPeople(rideInfo.get(i).getPeopleInCar());
-                        else {
-                            listViewText.setText("No one has signed up for this ride");
-                        }
+                if (rideInfo != null) {
+                    for (int i = 0; i < rideInfo.size(); i++) {
+                        if (rideInfo.get(i).getCarAddress().equals(s)) {
+                            rideCount = rideInfo.get(i).getNumberSeatsInCar();
+                            if (rideInfo.get(i).getPeopleInCar() != null)
+                                createListOfPeople(rideInfo.get(i).getPeopleInCar());
+                            else {
+                                listViewText.setText("No one has signed up for this ride");
+                            }
 
+                        }
                     }
                 }
                 seatsValue.setText(rideCount + "");

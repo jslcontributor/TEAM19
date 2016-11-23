@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import android.content.Context;
 import android.content.Intent;
@@ -51,68 +52,65 @@ public class ListRideActivity extends AppCompatActivity {
         submitRide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addressValue = createAddress(streetAddressValue, cityValue, stateValue, zipcodeValue);
-                rideListed = checkIfListedRide(addressValue);
-                seatCount = getSeatCount(seatCountValue);
-                System.out.println("Valid address: " + checkValidAddress(addressValue));
+            addressValue = createAddress(streetAddressValue, cityValue, stateValue, zipcodeValue);
+            rideListed = checkIfListedRide(addressValue);
+            seatCount = getSeatCount(seatCountValue);
+            System.out.println("Valid address: " + checkValidAddress(addressValue));
 
-                if (addressValue.length() == 0 && seatCount == 0) {
-                    errorText.setText("Error. Enter your car address and seat count");
-                } else if (addressValue.length() == 0) {
-                    errorText.setText("Error. Enter your car address");
-                } else if (!checkValidAddress(addressValue)) {
-                    errorText.setText("Not a valid address.");
-                } else if (seatCount == 0) {
-                    errorText.setText("Error. Enter your seat count.");
-                }  else if (!rideListed && addressValue.length() > 0 && seatCount != 0 && checkValidAddress(addressValue)) {
-                    errorText.setText(" ");
-                    FirebaseDatabase.getInstance().getReference("events").addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            String key = "aee";
-                            final DatabaseReference ref;
-                            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            ref = database.getReference("events/" + key);
-                            ArrayList<String> peopleInCar = new ArrayList<>();
-                            Context c = getApplicationContext();
-                            LatLng ll = getLocationFromAddress(c, addressValue);
-                            RideInfo ri = new RideInfo(addressValue, peopleInCar, seatCount); //, ll);
-                            List<RideInfo> rideInfo;
-                            GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
-                            rideInfo = dataSnapshot.child("rideLocation").getValue(t);
-                            if (rideInfo == null)
-                                rideInfo = new ArrayList<>();
-                            rideInfo.add(ri);
-                            ref.child("rideLocation").setValue(rideInfo);
-                        }
+            final String val = getIntent().getStringExtra("eventNumber");
 
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            if (addressValue.length() == 0 && seatCount == 0) {
+                errorText.setText("Error. Enter your car address and seat count");
+            } else if (addressValue.length() == 0) {
+                errorText.setText("Error. Enter your car address");
+            } else if (!checkValidAddress(addressValue)) {
+                errorText.setText("Not a valid address.");
+            } else if (seatCount == 0) {
+                errorText.setText("Error. Enter your seat count.");
+            }  else if (!rideListed && addressValue.length() > 0 && seatCount != 0 && checkValidAddress(addressValue)) {
+                errorText.setText(" ");
+                final DatabaseReference ref;
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                ref = database.getReference("TEAM19/events/" + val);
 
-                        }
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //                        String key = "aee";
+                        final DatabaseReference ref;
+                        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        ref = database.getReference("TEAM19/events/" + val);
+                        ArrayList<String> peopleInCar = new ArrayList<>();
+                        Context c = getApplicationContext();
+                        LatLng ll = getLocationFromAddress(c, addressValue);
+                        RideInfo ri = new RideInfo(addressValue, peopleInCar, seatCount); //, ll);
+                        List<RideInfo> rideInfo;
+                        GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
+                        rideInfo = dataSnapshot.child("rideLocation").getValue(t);
+                        if (rideInfo == null)
+                            rideInfo = new ArrayList<>();
+                        rideInfo.add(ri);
+                        ref.child("rideLocation").setValue(rideInfo);
 
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-                            try{
 
-                            }
-                            catch (Exception e) {return;}
-                        }
 
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    }
 
-                        }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                    }
 
-                        }
-                    });
-                    startActivity(new Intent(ListRideActivity.this, EventInfo.class));
-                } else {
-                    errorText.setText("You've already listed your ride.");
-                }
+                });
+                Intent i = new Intent(ListRideActivity.this, EventInfo.class);
+                i.putExtra("eventNumber", val);
+                System.out.println("EVENT NUMBER: " + val);
+                startActivity(i);
+            } else {
+                errorText.setText("You've already listed your ride.");
+            }
+
+
             }
         });
 
@@ -120,6 +118,10 @@ public class ListRideActivity extends AppCompatActivity {
         cancelRide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final String val = getIntent().getStringExtra("eventNumber");
+                Intent i = new Intent(ListRideActivity.this, EventInfo.class);
+                i.putExtra("eventNumber", val);
+                startActivity(i);
                 finish();
             }
         });

@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static android.os.SystemClock.sleep;
 
 public class EventActivity extends AppCompatActivity {
@@ -39,13 +42,14 @@ public class EventActivity extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                List<RideInfo> ri = new ArrayList<>(0);
                 Event event = new Event(title.getText().toString(),
                         date.getText().toString(), time.getText().toString(),
                         location.getText().toString(), description.getText().toString(),
-                         null);
+                         ri);
                 event.add();
               //  event.setCount();
-                sleep(100);
+                sleep(500);
                 startActivity(new Intent(EventActivity.this, MainActivity.class));
                 finish();
                 //startActivity(new Intent(EventActivity.this, LoginActivity.class));

@@ -3,6 +3,7 @@ package com.apockestafe.team19;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.camera2.params.Face;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
@@ -37,9 +39,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
 import java.util.Arrays;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.facebook.internal.FacebookDialogFragment.TAG;
 
 public class LoginFragment extends Fragment /*this extends might needs
@@ -50,6 +54,7 @@ public class LoginFragment extends Fragment /*this extends might needs
     public ProfileTracker mProfileTracker;
     private FirebaseAuth mAuth;
     private SharedPreferencesEditor editor;
+    public static Context contextOfApplication;
 
 
     //private UiLifecycleHelper uiHelper;
@@ -68,7 +73,9 @@ public class LoginFragment extends Fragment /*this extends might needs
 
         @Override
         public void onCancel() {
-
+//            FacebookSdk.sdkInitialize(getApplicationContext());
+//            LoginManager.getInstance().logOut();
+//            AccessToken.setCurrentAccessToken(null);
         }
 
         @Override
@@ -86,6 +93,9 @@ public class LoginFragment extends Fragment /*this extends might needs
         super.onCreate(savedInstanceState);
         mAuth.getInstance();
 
+        contextOfApplication = getApplicationContext();
+
+
         //if(loginr)
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
 
@@ -94,7 +104,8 @@ public class LoginFragment extends Fragment /*this extends might needs
         AccessTokenTracker mAccessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldtracker, AccessToken newtracker) {
-                openNextActivity();
+                if (newtracker != null)
+                    openNextActivity();
             }
         };
 
@@ -154,6 +165,9 @@ public class LoginFragment extends Fragment /*this extends might needs
 
             @Override
             public void onCancel() {
+                FacebookSdk.sdkInitialize(getApplicationContext());
+                LoginManager.getInstance().logOut();
+                AccessToken.setCurrentAccessToken(null);
                 Log.d(TAG, "facebook:onCancel");
 
             }
@@ -185,6 +199,14 @@ public class LoginFragment extends Fragment /*this extends might needs
     @Override
     public void onDestroy() {
         super.onDestroy();
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+//                FacebookSdk.sdkInitialize(getApplicationContext());
+//                LoginManager.getInstance().logOut();
+//                AccessToken.setCurrentAccessToken(null);
+            }
+        });
         mAccessTokenTracker.stopTracking();
         mProfileTracker.stopTracking();
     }
@@ -213,5 +235,10 @@ public class LoginFragment extends Fragment /*this extends might needs
             }
         });
     }
+
+    public static Context getContextOfApplication(){
+        return contextOfApplication;
+    }
+
 
 }

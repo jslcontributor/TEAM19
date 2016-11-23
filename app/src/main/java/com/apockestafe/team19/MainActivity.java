@@ -1,6 +1,7 @@
 package com.apockestafe.team19;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Set;
 
 import static com.facebook.internal.FacebookDialogFragment.TAG;
 
@@ -49,12 +51,17 @@ public class MainActivity extends AppCompatActivity {
     private EventList eventList;
     private ArrayAdapter<String> adapter;
     private final ArrayList<String> aList = new ArrayList<>();
+    private ArrayList<String> eNums;
     private String email;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    public static Context contextOfApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        contextOfApplication = getApplicationContext();
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         auth = FirebaseAuth.getInstance();
       /*  user = FirebaseAuth.getInstance().getCurrentUser();
@@ -111,7 +118,13 @@ public class MainActivity extends AppCompatActivity {
         scrollList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("SCROLL LIST POSITION: " + position);
+                System.out.println("ID: " + id);
+                System.out.println("PARENT: " + parent);
+                System.out.println("eNums: " + eNums.get((int) id));
+                System.out.println("ARRAY LIST POSITION: " + aList.get(position));
                 Intent newActivity = new Intent(MainActivity.this, EventInfo.class);
+                newActivity.putExtra("eventNumber", eNums.get((int) id));
                 startActivity(newActivity);
             }
         });
@@ -154,16 +167,26 @@ public class MainActivity extends AppCompatActivity {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                eNums = new ArrayList<>();
 //                eventList = new EventList(dataSnapshot);
 //                listAdapterHelper();
-                for (DataSnapshot data : dataSnapshot.child("events").getChildren()) {
-                    String title = (String) data.child("title").getValue();
-                    String date = (String) data.child("date").getValue();
+                Context applicationContext = MainActivity.getContextOfApplication();
+                editor = new SharedPreferencesEditor(applicationContext.getSharedPreferences("login", MODE_PRIVATE));
+                Set<String> set = editor.getEvents();
+                ArrayList<String> eventNumbers = new ArrayList<>();
+                if (set != null)
+                    eventNumbers.addAll(0, set);
+//                for (DataSnapshot data : dataSnapshot.child("events").getChildren()) {
+                for (int i = 0; i < eventNumbers.size(); i++) {
+                    String title = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("title").getValue();
+                    String date = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("date").getValue();
                     String eventDisplayName = title + " | " + date;
                     aList.add(eventDisplayName);
+                    eNums.add(eventNumbers.get(i));
                 }
                 adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, aList);
                 scrollList.setAdapter(adapter);
+
 
             }
 
@@ -184,4 +207,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //        }
 //    }
+    public static Context getContextOfApplication(){
+        return contextOfApplication;
+    }
 }

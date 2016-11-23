@@ -6,9 +6,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Observable;
 import java.util.List;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
@@ -22,8 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.Observable;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.os.SystemClock.sleep;
 
 
@@ -37,7 +43,10 @@ public class Event extends Observable {
     private  FirebaseDatabase database;
     public boolean deleted;
     public volatile boolean added = false;
-  //  public volatile boolean worked = false;
+    private SharedPreferencesEditor editor;
+    private ArrayList<String> eventNumbers;
+
+    //  public volatile boolean worked = false;
     public long counter;
     //private final AtomicInteger count;
 
@@ -65,8 +74,6 @@ public class Event extends Observable {
         this.location = location;
         this.description = description;
         this.rideLocation = rideLocation;
-
-
     }
 
     private void changeData (DataSnapshot dataSnapshot) {
@@ -94,6 +101,9 @@ public class Event extends Observable {
 
     public void add() {
         //  System.out.println("1234" + count.get());
+
+//        System.out.println("CURRENT EMAIL: " + editor.getMyEmail());
+
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("TEAM19");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -111,13 +121,8 @@ public class Event extends Observable {
                 else{
                     count = (long) dataSnapshot.child("counters").child("counter").getValue();
                 }
-             ////  // long count = (long) dataSnapshot.child("counters").child("counter").getValue();
-                //count++;
-              //  String s = Long.toString(count);
-            //    Log.d("CounterVariable", s);
-             //   System.out.println("Count: " + s);
+
                 if(!added){
-                  //  added = true;
                     count++;
                     String s = Long.toString(count);
                     boolean returnVal = addHelper(s, dataSnapshot, count);
@@ -126,9 +131,6 @@ public class Event extends Observable {
                         addHelper2(count);
                     }
                 }
-             //   dataSnapshot.child("counters").child("counter").getRef().setValue(count);
-                //addHelper2(count);
-
             }
 
             @Override
@@ -136,10 +138,17 @@ public class Event extends Observable {
 
             }
         });
-     //   setCount();
     }
 
     public boolean addHelper(String s, DataSnapshot ds, long count) {
+        Context applicationContext = MainActivity.getContextOfApplication();
+        editor = new SharedPreferencesEditor(applicationContext.getSharedPreferences("login", MODE_PRIVATE));
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+        SharedPreferences p = applicationContext.getSharedPreferences("login", MODE_PRIVATE);
+//        editor = new SharedPreferencesEditor(prefs);
+//        editor = new SharedPreferencesEditor(p);
+        System.out.println("EMAIL: " + editor.getMyEmail());
+
         if(added){
             return false;
         }
@@ -148,12 +157,18 @@ public class Event extends Observable {
         String d = Long.toString(count);
         if(
                 ds.child("events").child(d).child("title").getValue() != null &&
-                ((String)ds.child("events").child(d).child("title").getValue()).equals(this.title))
+                (ds.child("events").child(d).child("title").getValue()).equals(this.title))
         {
            return false;
         }
         else{
             ref.child("events").child(""+s).setValue(this);
+            Set<String> set = editor.getEvents();
+            eventNumbers = new ArrayList<>();
+            if (set != null)
+                eventNumbers.addAll(set);
+            eventNumbers.add(s);
+            editor.addEvents((eventNumbers));
             return true;
             //addHelper2(count++);
         }
