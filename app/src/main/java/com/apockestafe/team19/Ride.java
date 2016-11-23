@@ -1,18 +1,14 @@
 package com.apockestafe.team19;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.vision.text.Text;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,9 +22,15 @@ import java.util.List;
 public class Ride extends AppCompatActivity {
 
     private Button backButton, addToCarButton, removeFromCarButton;
-    private TextView seatsValue, errorText;
+    private TextView seatsValue, errorText, listViewText;
     private SharedPreferencesEditor editor;
     private int rideCount;
+    private ListView scrollList;
+    private final ArrayList<String> aList = new ArrayList<>();
+    private ArrayAdapter<String> adapter;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +39,11 @@ public class Ride extends AppCompatActivity {
 
         seatsValue = (TextView) findViewById(R.id.seatsValue);
         errorText = (TextView) findViewById(R.id.errorText);
+        listViewText = (TextView) findViewById(R.id.words);
         final String s = getIntent().getStringExtra("Marker Name");
         errorText.setText(s);
+
+        scrollList = (ListView) findViewById(R.id.listViewOfPeople);
 
         backButton = (Button) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -53,8 +58,6 @@ public class Ride extends AppCompatActivity {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         String key = "aee";
         ref = database.getReference("events/" + key);
-
-        System.out.println("KEY: " + key);
 
         addToCarButton = (Button) findViewById(R.id.addToCarButton);
         addToCarButton.setOnClickListener(new View.OnClickListener() {
@@ -81,32 +84,36 @@ public class Ride extends AppCompatActivity {
                                 } else {
                                     if (ri.getPeopleInCar() == null) {
                                         List<String> people = new ArrayList<>();
-                                        people.add(editor.getMyEmail());
                                         ri.setPeopleInCar(people);
-                                    } else {
-                                        boolean inCar = false;
-                                        System.out.println("Email: " + editor.getMyEmail());
-                                        for (int j = 0; j < ri.getPeopleInCar().size(); j++) {
-                                            if (ri.getPeopleInCar().get(j).equals(editor.getMyEmail())) {
-                                                inCar = true;
-                                            }
-                                        }
-                                        System.out.println("Value of inCar: " + inCar);
-                                        if (!inCar) {
-                                            System.out.println("User added to car: " + editor.getMyEmail());
-                                            ri.getPeopleInCar().add(editor.getMyEmail());
-                                            rideCount = ri.getNumberSeatsInCar();
-                                            Log.d("seatCount", "" + rideCount);
-                                            rideCount--;
-                                            ri.setNumberSeatsInCar(rideCount);
-    //                                        seatsValue.setText((rideCount));
-                                            errorText.setText("Added to this car.");
-                                        } else {
-                                            errorText.setText("Already added to this car");
+                                    }
+                                    boolean inCar = false;
+                                    boolean inAnotherCar = checkIfPersonIsInAnyCar(rideInfo, editor.getMyEmail(), ri.getCarAddress());
+
+                                    System.out.println("Email: " + editor.getMyEmail());
+                                    for (int j = 0; j < ri.getPeopleInCar().size(); j++) {
+                                        if (ri.getPeopleInCar().get(j).equals(editor.getMyEmail())) {
+                                            inCar = true;
                                         }
                                     }
+                                    System.out.println("Value of inCar: " + inCar);
+                                    if (!inCar && !inAnotherCar) {
+                                        System.out.println("User added to car: " + editor.getMyEmail());
+                                        ri.getPeopleInCar().add(editor.getMyEmail());
+                                        addPersonToList(editor.getMyEmail());
+                                        rideCount = ri.getNumberSeatsInCar();
+                                        System.out.println("SEAT COUNT: " + rideCount);
+                                        rideCount--;
+                                        ri.setNumberSeatsInCar(rideCount);
+                                        seatsValue.setText(ri.getNumberSeatsInCar() + "");
+                                        errorText.setText("Added to this car.");
+                                    } else if (inCar && !inAnotherCar) {
+                                        errorText.setText("Already added to this car");
+                                    } else if (!inCar && inAnotherCar) {
+                                        errorText.setText("Already signed up for another car");
+                                    }
+
                                     ref.child("rideLocation").setValue(rideInfo);
-                                    seatsValue.setText(ri.getNumberSeatsInCar() + "");
+
 
                                 }
                             }
@@ -136,7 +143,37 @@ public class Ride extends AppCompatActivity {
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-
+                        GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
+                        List<RideInfo> rideInfo = dataSnapshot.child("rideLocation").getValue(t);
+                        for (int i = 0; i < rideInfo.size(); i++) {
+                            if (rideInfo.get(i).getCarAddress().equals(s)) {
+                                RideInfo ri = rideInfo.get(i);
+                                boolean inCar = false;
+                                if (ri.getPeopleInCar() != null) {
+                                    for (int j = 0; j < ri.getPeopleInCar().size(); j++) {
+                                        if (ri.getPeopleInCar().get(j).equals(editor.getMyEmail())) {
+                                            inCar = true;
+                                        }
+                                    }
+                                }
+                                if (inCar) {
+                                    for (int k = 0; k < ri.getPeopleInCar().size(); k++) {
+                                        if (ri.getPeopleInCar().get(k).equals(editor.getMyEmail())) {
+                                            removePersonFromList(ri.getPeopleInCar().get(k));
+                                            ri.getPeopleInCar().remove(k);
+                                            rideCount = ri.getNumberSeatsInCar();
+                                            rideCount++;
+                                            ri.setNumberSeatsInCar(rideCount);
+                                            seatsValue.setText(ri.getNumberSeatsInCar() + "");
+                                            errorText.setText("You have been removed from this ride");
+                                        }
+                                    }
+                                } else {
+                                    errorText.setText("Cannot remove. You are not in this ride");
+                                }
+                            }
+                        }
+                        ref.child("rideLocation").setValue(rideInfo);
                     }
 
                     @Override
@@ -144,14 +181,77 @@ public class Ride extends AppCompatActivity {
 
                     }
                 });
-                rideCount++;
+            }
+        });
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
+                List<RideInfo> rideInfo = dataSnapshot.child("rideLocation").getValue(t);
+                for (int i = 0; i < rideInfo.size(); i++) {
+                    if (rideInfo.get(i).getCarAddress().equals(s)) {
+                        rideCount = rideInfo.get(i).getNumberSeatsInCar();
+                        if (rideInfo.get(i).getPeopleInCar() != null)
+                            createListOfPeople(rideInfo.get(i).getPeopleInCar());
+                        else {
+                            listViewText.setText("No one has signed up for this ride");
+                        }
+
+                    }
+                }
                 seatsValue.setText(rideCount + "");
-                errorText.setText("");
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
 
-    public void getCarInfo() {
+    private void createListOfPeople(List<String> people) {
+        if (people != null || people.size() != 0) {
+            for (int i = 0; i < people.size(); i++)
+                aList.add(people.get(i));
+            adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, aList);
+            scrollList.setAdapter(adapter);
+        }
+    }
 
+    private void removePersonFromList(String person) {
+        for (int i = 0; i < aList.size(); i++)
+            if (aList.get(i).equals(person))
+                aList.remove(i);
+        if (aList.size() == 0)
+            listViewText.setText("No one has signed up for this ride");
+        else
+            listViewText.setText("Friends Currently Signed Up");
+        adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, aList);
+        scrollList.setAdapter(adapter);
+    }
+
+    private void addPersonToList(String person) {
+        aList.add(person);
+        adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, aList);
+        scrollList.setAdapter(adapter);
+        listViewText.setText("Friends Currently Signed Up");
+    }
+
+    private boolean checkIfPersonIsInAnyCar(List<RideInfo> rideInfo, String person, String address ) {
+        for (int i = 0; i < rideInfo.size(); i++) {
+            RideInfo ri = rideInfo.get(i);
+            List<String> people = ri.getPeopleInCar();
+            if (people != null)
+                for (int j = 0; j < people.size(); j++) {
+                    if (people.get(i).equals(person) && !(address.equals(ri.getCarAddress())))
+                        return true;
+            }
+        }
+
+        return false;
     }
 }
