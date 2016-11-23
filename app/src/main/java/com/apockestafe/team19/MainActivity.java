@@ -1,6 +1,7 @@
 package com.apockestafe.team19;
 
 import android.app.ListActivity;
+import android.net.Uri;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.applinks.AppLinkData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -38,6 +40,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Set;
 
+import bolts.AppLinks;
+
 import static com.facebook.internal.FacebookDialogFragment.TAG;
 
 
@@ -51,8 +55,9 @@ public class MainActivity extends AppCompatActivity {
     private EventList eventList;
     private ArrayAdapter<String> adapter;
     private final ArrayList<String> aList = new ArrayList<>();
+    private String email, token;
     private ArrayList<String> eNums;
-    private String email;
+  //  private String email;
     private FirebaseAuth.AuthStateListener mAuthListener;
     public static Context contextOfApplication;
 
@@ -63,6 +68,27 @@ public class MainActivity extends AppCompatActivity {
         contextOfApplication = getApplicationContext();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
+        Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
+        if(targetUrl != null) {
+            token = getIntent().getExtras().getString("fb_access_token");
+            AppLinkData ald = AppLinkData.createFromAlApplinkData(getIntent());
+            String promoCode = ald.getPromotionCode();
+            if(promoCode != null) {
+                //put it in sharedpref.
+            }
+        }
+        else{
+            AppLinkData.fetchDeferredAppLinkData(getApplicationContext(),
+                    new AppLinkData.CompletionHandler() {
+                        @Override
+                        public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
+                            String promoCode = appLinkData.getPromotionCode();
+                            if(promoCode != null) {
+                                //put it in sharedpref
+                            }
+                        }
+                    });
+        }
         auth = FirebaseAuth.getInstance();
       /*  user = FirebaseAuth.getInstance().getCurrentUser();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -82,7 +108,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(editor.getMyEmail() == null || editor.getMyEmail() == ""){
-            String token = AccessToken.getCurrentAccessToken().getToken();
+            if(token == null) {
+                token = AccessToken.getCurrentAccessToken().getToken();
+            }
             handleFacebookAccessToken(token);
 //            email = auth.getCurrentUser().getEmail();
 //            editor.addMyEmail(email);
@@ -118,11 +146,6 @@ public class MainActivity extends AppCompatActivity {
         scrollList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("SCROLL LIST POSITION: " + position);
-                System.out.println("ID: " + id);
-                System.out.println("PARENT: " + parent);
-                System.out.println("eNums: " + eNums.get((int) id));
-                System.out.println("ARRAY LIST POSITION: " + aList.get(position));
                 Intent newActivity = new Intent(MainActivity.this, EventInfo.class);
                 newActivity.putExtra("eventNumber", eNums.get((int) id));
                 startActivity(newActivity);

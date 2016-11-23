@@ -90,12 +90,13 @@ public class EventInfo extends AppCompatActivity {
 
     public void buttonHandler() {
         String appLinkUrl, previewImageUrl;
-        appLinkUrl = "www.google.com";
+        appLinkUrl = "https://fb.me/1033003976822219";
         previewImageUrl = "www.google.com";
         if(AppInviteDialog.canShow()) {
             AppInviteContent content = new AppInviteContent.Builder()
                     .setApplinkUrl(appLinkUrl)
                     .setPreviewImageUrl(previewImageUrl)
+                    .setPromotionDetails("Example Promo msg", "expromo")
                     .build();
             AppInviteDialog.show(this,content);
         }
