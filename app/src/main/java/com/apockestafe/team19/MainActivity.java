@@ -74,16 +74,18 @@ public class MainActivity extends AppCompatActivity {
         editor = new SharedPreferencesEditor(getSharedPreferences("login", MODE_PRIVATE));
         Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
         if(targetUrl != null) {
+            System.out.println("GOT HERE");
             token = getIntent().getExtras().getString("fb_access_token");
             AppLinkData ald = AppLinkData.createFromAlApplinkData(getIntent());
             String promoCode = ald.getPromotionCode();
+            System.out.println("PROMOCODE: " + promoCode);
             Set<String> set = editor.getEvents();
             ArrayList<String> eventNumbers = new ArrayList<>();
             if(set != null) {
                 eventNumbers.addAll(set);
             }
             eventNumbers.add(promoCode);
-//            editor.addEvents(eventNumbers);
+            editor.addEvents(eventNumbers);
         }
         else{
             AppLinkData.fetchDeferredAppLinkData(getApplicationContext(),
