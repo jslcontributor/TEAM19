@@ -100,8 +100,11 @@
 
         <activity android:name=".EventInfo" />
         <activity android:name=".ListRideActivity" />
-        <activity android:name=".Ride" />
-        <activity android:name=".ItemsActivity"></activity>
+        <activity android:name=".Ride"></activity>
+        <provider
+            android:authorities="com.facebook.app.FacebookContentProvider1011343502321600"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
     </application>
 
 </manifest>
