@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setTitle("My Events");
+
         contextOfApplication = getApplicationContext();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -219,8 +221,10 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < eventNumbers.size(); i++) {
                     String title = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("title").getValue();
                     String date = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("date").getValue();
-                    String eventDisplayName = title + " | " + date;
-                    aList.add(eventDisplayName);
+                    String time = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("time").getValue();
+                    String eventDisplayName = title + " | " + date + " | " + time;
+                    if ((boolean) dataSnapshot.child("events").child(eventNumbers.get(i)).child("deleted").getValue() == false)
+                        aList.add(eventDisplayName);
                     eNums.add(eventNumbers.get(i));
                 }
                 adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, aList);

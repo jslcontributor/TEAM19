@@ -40,6 +40,7 @@ public class ListRideActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_ride);
+        setTitle("List Your Ride");
 
         streetAddressValue = (EditText) findViewById(R.id.streetAddressValue);
         cityValue = (EditText) findViewById(R.id.cityValue);
