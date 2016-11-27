@@ -27,10 +27,10 @@ class SharedPreferencesEditor {
         editor.apply();
     }
 
-    public void deleteEvents(ArrayList<String> eventNumbers) {
+    public void deleteEvent(ArrayList<String> eventNumbers, int pos) {
         Set<String> set = new HashSet<>();
         set.addAll(eventNumbers);
-        set.remove("18");
+        set.remove(pos);
         editor.putStringSet("myEvents", set);
         editor.apply();
     }

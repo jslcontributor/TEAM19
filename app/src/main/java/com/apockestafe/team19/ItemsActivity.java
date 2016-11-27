@@ -1,10 +1,13 @@
 package com.apockestafe.team19;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 
 public class ItemsActivity extends AppCompatActivity {
@@ -24,7 +26,7 @@ public class ItemsActivity extends AppCompatActivity {
     private EditText addItemEditText;
     private ArrayList<String> itemList;
     private DatabaseReference ref;
-    private  FirebaseDatabase database;
+    private FirebaseDatabase database;
     private ArrayAdapter<String> adapter;
 
     @Override
@@ -32,8 +34,7 @@ public class ItemsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items);
         setTitle("Item List");
-        this.getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         final String s = getIntent().getStringExtra("eventNumber");
 
@@ -44,9 +45,9 @@ public class ItemsActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ItemsActivity.this, EventInfo.class);
-                i.putExtra("eventNumber", s);
-                startActivity(i);
+            Intent i = new Intent(ItemsActivity.this, EventInfo.class);
+            i.putExtra("eventNumber", s);
+            startActivity(i);
             }
         });
 
@@ -55,22 +56,57 @@ public class ItemsActivity extends AppCompatActivity {
         addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String value = addItemEditText.getText().toString();
+            final String value = addItemEditText.getText().toString();
+            database = FirebaseDatabase.getInstance();
+            ref = database.getReference("TEAM19");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                    itemList = dataSnapshot.child("events").child(s).child("itemsList").getValue(t);
+                    if (itemList == null)
+                        itemList = new ArrayList<>();
+                    if(value.length() > 0)
+                        itemList.add(value);
+                    adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, itemList);
+                    itemsListView.setAdapter(adapter);
+                    addItemEditText.setText("");
+                    ref.child("events").child(s).child("itemsList").setValue(itemList);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            }
+        });
+
+        itemsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+            final AlertDialog.Builder alert = new AlertDialog.Builder(ItemsActivity.this);
+            alert.setTitle("Alert!!");
+            alert.setMessage("Are you sure to delete item");
+            alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(final DialogInterface dialog, int which) {
                 database = FirebaseDatabase.getInstance();
                 ref = database.getReference("TEAM19");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                        GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {
+                        };
                         itemList = dataSnapshot.child("events").child(s).child("itemsList").getValue(t);
                         if (itemList == null)
                             itemList = new ArrayList<>();
-                        if(value.length() > 0)
-                            itemList.add(value);
+                        itemList.remove(position);
                         adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, itemList);
                         itemsListView.setAdapter(adapter);
-                        addItemEditText.setText("");
                         ref.child("events").child(s).child("itemsList").setValue(itemList);
+                        dialog.dismiss();
                     }
 
                     @Override
@@ -78,6 +114,22 @@ public class ItemsActivity extends AppCompatActivity {
 
                     }
                 });
+
+                }
+            });
+
+            alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    dialog.dismiss();
+                }
+            });
+
+            alert.show();
+
+            return true;
             }
         });
     }

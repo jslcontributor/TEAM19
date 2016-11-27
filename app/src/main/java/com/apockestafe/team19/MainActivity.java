@@ -1,5 +1,7 @@
 package com.apockestafe.team19;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +18,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import bolts.AppLinks;
 
@@ -84,6 +88,46 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(newActivity);
             }
         });
+
+        scrollList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, final long id) {
+                final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                alert.setTitle("Alert!!");
+                alert.setMessage("Are you sure to delete hide this event");
+                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+                        SharedPreferencesEditor editor = new SharedPreferencesEditor(getSharedPreferences("login", MODE_PRIVATE));
+                        Set<String> set = editor.getEvents();
+                        ArrayList<String> events = new ArrayList<>();
+                        events.addAll(set);
+                        events.remove(position);
+                        editor.deleteEvent(events, position);
+//                        scrollList.setAdapter(null);
+//                        listAdapter();
+                        adapter.clear();
+                        scrollList.setAdapter(adapter);
+                        listAdapter();
+                        dialog.dismiss();
+                    }
+
+                });
+
+                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show();
+
+                return true;
+            }
+        });
     }
 
     public void listAdapter () {
@@ -102,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
 //                    editor.deleteEvents(eventNumbers);
 
                     for (int i = 0; i < eventNumbers.size(); i++) {
-                        System.out.println("EVENT NUMBER: " + eventNumbers.get(i));
                         String title = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("title").getValue();
                         String date = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("date").getValue();
                         String time = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("time").getValue();
