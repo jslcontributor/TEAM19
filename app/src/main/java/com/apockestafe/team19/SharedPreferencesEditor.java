@@ -32,7 +32,7 @@ class SharedPreferencesEditor {
     public void deleteEvents(ArrayList<String> eventNumbers) {
         Set<String> set = new HashSet<>();
         set.addAll(eventNumbers);
-        set.remove("1");
+        set.remove("18");
 //        editor.remove("myEvents");
         editor.putStringSet("myEvents", set);
         editor.apply();

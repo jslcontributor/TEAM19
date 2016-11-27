@@ -87,28 +87,28 @@ public class MainActivity extends AppCompatActivity {
             eventNumbers.add(promoCode);
             editor.addEvents(eventNumbers);
         }
-        else{
-            AppLinkData.fetchDeferredAppLinkData(getApplicationContext(),
-                    new AppLinkData.CompletionHandler() {
-                        @Override
-                        public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
-                            try{
-                                if(appLinkData.getPromotionCode() == null) {
-                                    return;
-                                }
-                            }
-                            catch(NullPointerException e) {return;}
-                            String promoCode = appLinkData.getPromotionCode();
-                            Set<String> set = editor.getEvents();
-                            ArrayList<String> eventNumbers = new ArrayList<>();
-                            if(set!=null){
-                                eventNumbers.addAll(set);
-                            }
-                            eventNumbers.add(promoCode);
-//                            editor.addEvents(eventNumbers);
-                        }
-                    });
-        }
+//        else{
+//            AppLinkData.fetchDeferredAppLinkData(getApplicationContext(),
+//                    new AppLinkData.CompletionHandler() {
+//                        @Override
+//                        public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
+//                            try{
+//                                if(appLinkData.getPromotionCode() == null) {
+//                                    return;
+//                                }
+//                            }
+//                            catch(NullPointerException e) {return;}
+//                            String promoCode = appLinkData.getPromotionCode();
+//                            Set<String> set = editor.getEvents();
+//                            ArrayList<String> eventNumbers = new ArrayList<>();
+//                            if(set!=null){
+//                                eventNumbers.addAll(set);
+//                            }
+//                            eventNumbers.add(promoCode);
+////                            editor.addEvents(eventNumbers);
+//                        }
+//                    });
+//        }
         auth = FirebaseAuth.getInstance();
       /*  user = FirebaseAuth.getInstance().getCurrentUser();
         mAuthListener = new FirebaseAuth.AuthStateListener() {

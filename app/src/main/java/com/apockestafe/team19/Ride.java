@@ -35,6 +35,7 @@ public class Ride extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride);
+        setTitle("Ride Info");
 
         final String val = getIntent().getStringExtra("Marker Name");
         String[] split = val.split(":");
@@ -61,8 +62,8 @@ public class Ride extends AppCompatActivity {
         final DatabaseReference ref;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        System.out.println("MARKER NAME: " + s);
-        System.out.println("KEY FOR RIDE.JAVA: " + key);
+//        System.out.println("MARKER NAME: " + s);
+//        System.out.println("KEY FOR RIDE.JAVA: " + key);
 //        String key = "aee";
         errorText.setText(s);
 
