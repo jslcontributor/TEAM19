@@ -127,7 +127,9 @@ public class LoginFragment extends Fragment /*this extends might needs
         View view = inflater.inflate(R.layout.activity_signin, container, false);
 
         loginButton = (LoginButton) view.findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
+
+        loginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_status"));
+       // loginButton.setPublishPermissions(Arrays.asList("publish_actions"));
         loginButton.setFragment(this);
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -199,14 +201,14 @@ public class LoginFragment extends Fragment /*this extends might needs
     @Override
     public void onDestroy() {
         super.onDestroy();
-        AsyncTask.execute(new Runnable() {
+       /* AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
 //                FacebookSdk.sdkInitialize(getApplicationContext());
 //                LoginManager.getInstance().logOut();
 //                AccessToken.setCurrentAccessToken(null);
             }
-        });
+        });*/
         mAccessTokenTracker.stopTracking();
         mProfileTracker.stopTracking();
     }
