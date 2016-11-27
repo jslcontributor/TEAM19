@@ -1,6 +1,7 @@
 package com.apockestafe.team19;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.Intent;
 import android.hardware.camera2.params.Face;
 import android.os.AsyncTask;
@@ -63,9 +64,14 @@ public class LoginFragment extends Fragment /*this extends might needs
     private FacebookCallback<LoginResult> mCallback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
+
             AccessToken accesstoken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
-            Log.d("get me profile", "Name");
+            Context applicationContext = MainActivity.getContextOfApplication();
+            editor = new SharedPreferencesEditor(applicationContext.getSharedPreferences("login", MODE_PRIVATE));
+            final String name = profile.getName();
+            editor.addName(name);
+            Log.d("get me profile", name);
             //handleFacebookAccessToken(accesstoken);
             openNextActivity();
 

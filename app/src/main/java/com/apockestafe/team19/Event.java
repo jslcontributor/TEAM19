@@ -44,7 +44,7 @@ public class Event extends Observable {
 
     private String title, date, time, location, description;
     private List<RideInfo> rideLocation;
-    private ArrayList<String> itemList;
+    private ArrayList<String> itemList, attendingList;
     //private ArrayList<ArrayList<String>> rideLocation;
     //private String[] rideLocation;
     private  DatabaseReference ref;
@@ -59,7 +59,8 @@ public class Event extends Observable {
     //private final AtomicInteger count;
 
     public Event(String title, String date, String time, String location,
-                 String description, List<RideInfo> rideLocation, ArrayList<String> itemList) {
+                 String description, List<RideInfo> rideLocation, ArrayList<String> itemList,
+                 ArrayList<String> attendingList) {
        // setCount();
 
         //count = new AtomicInteger();
@@ -83,6 +84,7 @@ public class Event extends Observable {
         this.description = description;
         this.rideLocation = rideLocation;
         this.itemList = itemList;
+        this.attendingList = attendingList;
     }
 
     private void changeData (DataSnapshot dataSnapshot) {
@@ -293,6 +295,8 @@ public class Event extends Observable {
     public List<RideInfo> getRideLocation() { return rideLocation; }
 
     public ArrayList<String> getItemList() { return itemList; }
+
+    public ArrayList<String> getAttendingList() {return attendingList;}
 
     public void addRideLocation(String[] rd) {
 

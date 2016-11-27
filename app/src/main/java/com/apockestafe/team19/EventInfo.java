@@ -1,11 +1,13 @@
 package com.apockestafe.team19;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +30,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 public class EventInfo extends AppCompatActivity {
 
@@ -37,8 +42,12 @@ public class EventInfo extends AppCompatActivity {
     private  FirebaseDatabase database;
     private TextView eventDescription;
     private ListView friendsListView;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> enums;
+    SharedPreferencesEditor editor;
     //WebDialog dialog;
     //GameRequestDialog requestDialog;
+    String s;
     CallbackManager callbackManager;
 
     @Override
@@ -46,6 +55,7 @@ public class EventInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+        editor = new SharedPreferencesEditor(getSharedPreferences("login", MODE_PRIVATE));
         /*dialog = new WebDialog(null, null);
         requestDialog.registerCallback(callbackManager, new FacebookCallback<GameRequestDialog.Result>() {
             @Override
@@ -66,7 +76,7 @@ public class EventInfo extends AppCompatActivity {
         setContentView(R.layout.activity_event_info);
 
         eventDescription = (TextView) findViewById(R.id.eventDescription);
-        final String s = getIntent().getStringExtra("eventNumber");
+        s = getIntent().getStringExtra("eventNumber");
 
         friendsListView = (ListView) findViewById(R.id.friendsListView);
 
@@ -79,6 +89,15 @@ public class EventInfo extends AppCompatActivity {
                 String description = (String) dataSnapshot.child("events").child(s).child("description").getValue();
                 eventDescription.setText("Event Description\n" + description);
                 setTitle((String) dataSnapshot.child("events").child(s).child("title").getValue());
+
+                String myName = editor.getName();
+                ArrayList<String> names = (ArrayList<String>) dataSnapshot.child("events").child(s)
+                        .child("attendingList").getValue();
+                int index = Collections.binarySearch(names, myName);
+                if(index < 0) {
+                    names.add(myName);
+                    ref.child("events").child(s).child("attendingList").setValue(names);
+                }
 
             }
 
@@ -153,47 +172,22 @@ public class EventInfo extends AppCompatActivity {
                     .build();
             AppInviteDialog.show(this,content);
         }
-    } /*
-    private void onClickRequestButton() {
-       // Bundle bundle = new Bundle();
-        //bundle.putString("app_id", "1011343502321600");
-        final String app_id = "{\"app_id\":" + "1011343502321600" + "}";
-        final String event_number = "\n{\"event_number\":" + getIntent().getStringExtra("eventNumber") + "}";
-        GameRequestContent content = new GameRequestContent.Builder()
-                .setMessage("Join my Event!")
-                .setData(app_id + event_number)
-                .setActionType(GameRequestContent.ActionType.SEND)
-                .setObjectId("4313")
-                .build();
-        requestDialog.show(content);
-        //requestDialog.show(this, content);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-    }*/
-
-  /*  private void sendInvite() {
-        final String event_number = getIntent().getStringExtra("eventNumber");
-        Bundle params = new Bundle();
-        params.putString("app_id", "1011343502321600");
-        params.putString("event_number", event_number);
-        showDialog("requests", params);
-    }*/
-   /* private void showDialog(String type, Bundle params) {
-
-        dialog = new WebDialog.Builder(this, type, params)
-        .setOnCompleteListener(new WebDialog.OnCompleteListener() {
+    public void listHandler() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(Bundle values, FacebookException error) {
-                dialog = null;
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                enums = (ArrayList<String>) dataSnapshot.child("events").child(s)
+                        .child("attendingList").getValue();
+                adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, enums);
+                friendsListView.setAdapter(adapter);
             }
-        }).build();
-        Window dialog_window = dialog.getWindow();
-        dialog_window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        dialog.show();
-    }*/
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

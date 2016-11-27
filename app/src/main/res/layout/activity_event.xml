@@ -39,7 +39,8 @@
         android:id="@+id/date"
         android:layout_below="@+id/title"
         android:layout_alignEnd="@+id/title"
-        android:layout_alignStart="@+id/title" />
+        android:layout_alignStart="@+id/title"
+        android:inputType="date" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,7 +56,8 @@
         android:id="@+id/time"
         android:layout_below="@+id/date"
         android:layout_alignEnd="@+id/date"
-        android:layout_alignStart="@+id/date" />
+        android:layout_alignStart="@+id/date"
+        android:inputType="time" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,18 +70,11 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/location"
+        android:id="@+id/street"
         android:layout_below="@+id/time"
         android:layout_alignEnd="@+id/time"
-        android:layout_alignStart="@+id/time" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Description"
-        android:id="@+id/textView4"
-        android:layout_below="@+id/location"
-        android:layout_alignParentStart="true" />
+        android:layout_alignStart="@+id/time"
+        android:text="Street Address" />
 
     <Button
         android:layout_width="wrap_content"
@@ -100,9 +95,58 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/description"
-        android:layout_below="@+id/location"
+        android:ems="10"
+        android:id="@+id/editText"
         android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/location" />
+        android:layout_toEndOf="@+id/textView4" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City"
+        android:ems="10"
+        android:layout_below="@+id/street"
+        android:layout_alignStart="@+id/editText"
+        android:id="@+id/city"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="State"
+        android:ems="10"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/street"
+        android:id="@+id/state"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zipcode"
+        android:ems="10"
+        android:id="@+id/zipcode"
+        android:layout_below="@+id/state"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/state" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/zipcode"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="22dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/description"
+        android:layout_alignBaseline="@+id/textView4"
+        android:layout_alignBottom="@+id/textView4"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/button_create"
+        android:layout_alignStart="@+id/zipcode" />
 
 </RelativeLayout>

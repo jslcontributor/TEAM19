@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             eventNumbers.add(promoCode);
             editor.addEvents(eventNumbers);
         }
-        else{
+       /* else{
             AppLinkData.fetchDeferredAppLinkData(getApplicationContext(),
                     new AppLinkData.CompletionHandler() {
                         @Override
@@ -105,10 +105,9 @@ public class MainActivity extends AppCompatActivity {
                                 eventNumbers.addAll(set);
                             }
                             eventNumbers.add(promoCode);
-//                            editor.addEvents(eventNumbers);
                         }
                     });
-        }
+        }*/
         auth = FirebaseAuth.getInstance();
       /*  user = FirebaseAuth.getInstance().getCurrentUser();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -130,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         if(editor.getMyEmail() == null || editor.getMyEmail() == ""){
             if(token == null) {
                 token = AccessToken.getCurrentAccessToken().getToken();
+
             }
             handleFacebookAccessToken(token);
 //            email = auth.getCurrentUser().getEmail();

@@ -78,7 +78,8 @@ public class EventList implements Observer{
                 data.child("location").getValue(String.class),
                 data.child("description").getValue(String.class),
                 data.child("rideLocation").getValue(t),
-                data.child("itemList").getValue(r));
+                data.child("itemList").getValue(r),
+                data.child("attendingList").getValue(r));
         event.addObserver(this);
         add(event);
     }
