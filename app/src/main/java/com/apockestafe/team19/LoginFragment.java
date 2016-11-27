@@ -56,7 +56,6 @@ public class LoginFragment extends Fragment /*this extends might needs
     private SharedPreferencesEditor editor;
     public static Context contextOfApplication;
 
-
     //private UiLifecycleHelper uiHelper;
     LoginButton loginButton;
 
@@ -95,6 +94,18 @@ public class LoginFragment extends Fragment /*this extends might needs
 
         contextOfApplication = getApplicationContext();
 
+        AccessToken at = AccessToken.getCurrentAccessToken();
+        try {
+            final String data = getActivity().getIntent().getStringExtra("accessToken");
+            if (data.equals("null"))
+                at = null;
+        } catch (Exception e){ e.printStackTrace();}
+
+
+        if (at != null)
+            startActivity(new Intent(getActivity(), MainActivity.class));
+
+
 
         //if(loginr)
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
@@ -127,8 +138,8 @@ public class LoginFragment extends Fragment /*this extends might needs
         View view = inflater.inflate(R.layout.activity_signin, container, false);
 
         loginButton = (LoginButton) view.findViewById(R.id.login_button);
-        loginButton.setPublishPermissions(Arrays.asList("publish_actions", "email", "public_profile", "user_status"));
-//        loginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_status"));
+//        loginButton.setPublishPermissions(Arrays.asList("publish_actions", "email", "public_profile", "user_status"));
+        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
         loginButton.setFragment(this);
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -139,36 +150,36 @@ public class LoginFragment extends Fragment /*this extends might needs
 //                handleFacebookAccessToken(loginResult.getAccessToken());
                 String tokener = loginResult.getAccessToken().getToken();
 
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                Log.v("LoginActivity", response.toString());
-
-                                // Application code
-                                try {
-                                    String email = object.getString("email");
-                                    editor = new SharedPreferencesEditor(getActivity().getSharedPreferences("login", MODE_PRIVATE));
-                                    editor.addMyEmail(email);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "email");
-                request.setParameters(parameters);
-                request.executeAsync();
+//                GraphRequest request = GraphRequest.newMeRequest(
+//                        loginResult.getAccessToken(),
+//                        new GraphRequest.GraphJSONObjectCallback() {
+//                            @Override
+//                            public void onCompleted(JSONObject object, GraphResponse response) {
+//                                Log.v("LoginActivity", response.toString());
+//
+//                                // Application code
+//                                try {
+//                                    String email = object.getString("email");
+//                                    editor = new SharedPreferencesEditor(getActivity().getSharedPreferences("login", MODE_PRIVATE));
+//                                    editor.addMyEmail(email);
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        });
+//                Bundle parameters = new Bundle();
+//                parameters.putString("fields", "email");
+//                request.setParameters(parameters);
+//                request.executeAsync();
 
                 openNextActivity();
             }
 
             @Override
             public void onCancel() {
-                FacebookSdk.sdkInitialize(getApplicationContext());
-                LoginManager.getInstance().logOut();
-                AccessToken.setCurrentAccessToken(null);
+//                FacebookSdk.sdkInitialize(getApplicationContext());
+//                LoginManager.getInstance().logOut();
+//                AccessToken.setCurrentAccessToken(null);
                 Log.d(TAG, "facebook:onCancel");
 
             }

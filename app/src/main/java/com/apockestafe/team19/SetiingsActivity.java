@@ -49,7 +49,9 @@ public class SetiingsActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SetiingsActivity.this, SigninActivity.class));
+                Intent i = new Intent(SetiingsActivity.this, SigninActivity.class);
+                i.putExtra("accessToken", "null");
+                startActivity(i);
             }
         });
     }
