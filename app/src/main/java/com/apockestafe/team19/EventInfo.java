@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
@@ -20,10 +21,11 @@ import com.google.firebase.database.ValueEventListener;
 public class EventInfo extends AppCompatActivity {
 
    // private Button mapButton, listRideButton, backButton;
-    private Button mapButton, listRideButton, backButton, inviteButton;
+    private Button mapButton, listRideButton, backButton, inviteButton, itemsButton;
     private DatabaseReference ref;
     private  FirebaseDatabase database;
     private TextView eventDescription;
+    private ListView friendsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,8 @@ public class EventInfo extends AppCompatActivity {
 
         eventDescription = (TextView) findViewById(R.id.eventDescription);
         final String s = getIntent().getStringExtra("eventNumber");
+
+        friendsListView = (ListView) findViewById(R.id.friendsListView);
 
 
         database = FirebaseDatabase.getInstance();
@@ -42,11 +46,23 @@ public class EventInfo extends AppCompatActivity {
                 String description = (String) dataSnapshot.child("events").child(s).child("description").getValue();
                 eventDescription.setText("Event Description\n" + description);
                 setTitle((String) dataSnapshot.child("events").child(s).child("title").getValue());
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        itemsButton = (Button) findViewById(R.id.itemsButton);
+        itemsButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EventInfo.this, ItemsActivity.class);
+                i.putExtra("eventNumber", s);
+                startActivity(i);
             }
         });
 

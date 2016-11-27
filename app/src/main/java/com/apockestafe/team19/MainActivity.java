@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 eventNumbers.addAll(set);
             }
             eventNumbers.add(promoCode);
-            editor.addEvents(eventNumbers);
+//            editor.addEvents(eventNumbers);
         }
         else{
             AppLinkData.fetchDeferredAppLinkData(getApplicationContext(),
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                                 eventNumbers.addAll(set);
                             }
                             eventNumbers.add(promoCode);
-                            editor.addEvents(eventNumbers);
+//                            editor.addEvents(eventNumbers);
                         }
                     });
         }
@@ -213,19 +213,25 @@ public class MainActivity extends AppCompatActivity {
 //                listAdapterHelper();
                 Context applicationContext = MainActivity.getContextOfApplication();
                 editor = new SharedPreferencesEditor(applicationContext.getSharedPreferences("login", MODE_PRIVATE));
+//                editor.deleteEvents();
+
                 Set<String> set = editor.getEvents();
                 ArrayList<String> eventNumbers = new ArrayList<>();
-                if (set != null)
+                if (set != null) {
                     eventNumbers.addAll(0, set);
+//                    editor.deleteEvents(eventNumbers);
+
 //                for (DataSnapshot data : dataSnapshot.child("events").getChildren()) {
-                for (int i = 0; i < eventNumbers.size(); i++) {
-                    String title = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("title").getValue();
-                    String date = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("date").getValue();
-                    String time = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("time").getValue();
-                    String eventDisplayName = title + " | " + date + " | " + time;
-                    if ((boolean) dataSnapshot.child("events").child(eventNumbers.get(i)).child("deleted").getValue() == false)
+                    for (int i = 0; i < eventNumbers.size(); i++) {
+                        System.out.println("EVENT NUMBER: " + eventNumbers.get(i));
+                        String title = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("title").getValue();
+                        String date = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("date").getValue();
+                        String time = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("time").getValue();
+                        String eventDisplayName = title + " | " + date + " | " + time;
+//                    if ((boolean) dataSnapshot.child("events").child(eventNumbers.get(i)).child("deleted").getValue() == false)
                         aList.add(eventDisplayName);
-                    eNums.add(eventNumbers.get(i));
+                        eNums.add(eventNumbers.get(i));
+                    }
                 }
                 adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, aList);
                 scrollList.setAdapter(adapter);

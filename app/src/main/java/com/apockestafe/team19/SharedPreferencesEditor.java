@@ -29,6 +29,15 @@ class SharedPreferencesEditor {
         editor.apply();
     }
 
+    public void deleteEvents(ArrayList<String> eventNumbers) {
+        Set<String> set = new HashSet<>();
+        set.addAll(eventNumbers);
+        set.remove("1");
+//        editor.remove("myEvents");
+        editor.putStringSet("myEvents", set);
+        editor.apply();
+    }
+
     public void addFirstName(String name) {
         editor.putString("myFirstName", name);
         editor.apply();

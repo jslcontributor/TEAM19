@@ -71,12 +71,14 @@ public class EventList implements Observer{
 
     private void addNewEvent(DataSnapshot data) {
         GenericTypeIndicator<ArrayList<RideInfo>> t = new GenericTypeIndicator<ArrayList<RideInfo>>() {};
+        GenericTypeIndicator<ArrayList<String>> r = new GenericTypeIndicator<ArrayList<String>>() {};
         Event event = new Event(data.child("title").getValue(String.class),
                 data.child("date").getValue(String.class),
                 data.child("time").getValue(String.class),
                 data.child("location").getValue(String.class),
                 data.child("description").getValue(String.class),
-                data.child("rideLocation").getValue(t));
+                data.child("rideLocation").getValue(t),
+                data.child("itemList").getValue(r));
         event.addObserver(this);
         add(event);
     }

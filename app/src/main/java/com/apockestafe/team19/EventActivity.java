@@ -44,13 +44,14 @@ public class EventActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 List<RideInfo> ri = new ArrayList<>(0);
+                ArrayList<String> itemsList = new ArrayList<>(0);
                 Event event = new Event(title.getText().toString(),
                         date.getText().toString(), time.getText().toString(),
                         location.getText().toString(), description.getText().toString(),
-                         ri);
+                         ri, itemsList);
                 event.add();
               //  event.setCount();
-                sleep(500);
+                sleep(1000);
                 startActivity(new Intent(EventActivity.this, MainActivity.class));
                 finish();
                 //startActivity(new Intent(EventActivity.this, LoginActivity.class));
