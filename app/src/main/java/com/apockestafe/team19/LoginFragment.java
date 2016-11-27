@@ -23,6 +23,8 @@ import com.facebook.login.LoginResult;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
 import java.util.Arrays;
+
+import static android.content.Context.MODE_PRIVATE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.facebook.internal.FacebookDialogFragment.TAG;
 
@@ -31,7 +33,7 @@ public class LoginFragment extends Fragment {
     private CallbackManager mCallbackManager;
     public AccessTokenTracker mAccessTokenTracker;
     public ProfileTracker mProfileTracker;
-    private FirebaseAuth mAuth;
+//    private FirebaseAuth mAuth;
     private SharedPreferencesEditor editor;
     public static Context contextOfApplication;
     LoginButton loginButton;
@@ -45,6 +47,7 @@ public class LoginFragment extends Fragment {
             Context applicationContext = MainActivity.getContextOfApplication();
             editor = new SharedPreferencesEditor(applicationContext.getSharedPreferences("login", MODE_PRIVATE));
             final String name = profile.getName();
+            System.out.println("NAME: " + name);
             editor.addName(name);
             Log.d("get me profile", name);
             //handleFacebookAccessToken(accesstoken);
@@ -83,8 +86,18 @@ public class LoginFragment extends Fragment {
         } catch (Exception e){ e.printStackTrace();}
 
 
-        if (at != null)
-            startActivity(new Intent(getActivity(), MainActivity.class));
+        if (at != null) {
+            Profile profile = Profile.getCurrentProfile();
+//            Context applicationContext = MainActivity.getContextOfApplication();
+//            editor = new SharedPreferencesEditor(applicationContext.getSharedPreferences("login", MODE_PRIVATE));
+            final String name = profile.getName();
+//            System.out.println("NAME: " + name);
+//            editor.addName(name);
+            Log.d("get me profile", name);
+            Intent i = new Intent(getActivity(), MainActivity.class);
+            i.putExtra("name", name);
+            startActivity(i);
+        }
 
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
 

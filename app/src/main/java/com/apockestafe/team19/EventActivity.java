@@ -56,10 +56,10 @@ public class EventActivity extends AppCompatActivity {
                 ListRideActivity addressManager = new ListRideActivity();
                 location = addressManager.createAddress(street, city, state, zipcode);
 
-                if(!addressManager.checkValidAddress(location)) {
-                    Toast.makeText(getApplicationContext(), "Not a valid address", Toast.LENGTH_LONG).show();
-                    return;
-                }
+//                if(!addressManager.checkValidAddress(location)) {
+//                    Toast.makeText(getApplicationContext(), "Not a valid address", Toast.LENGTH_LONG).show();
+//                    return;
+//                }
                 Event event = new Event(title.getText().toString(),
                         date.getText().toString(), time.getText().toString(),
                         location, description.getText().toString(),

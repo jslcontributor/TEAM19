@@ -23,7 +23,7 @@ public class Event extends Observable {
     public boolean deleted;
     public volatile boolean added = false;
     private SharedPreferencesEditor editor;
-    private ArrayList<String> eventNumbers;
+    private ArrayList<String> eventNumbers, attendingList;
 
     public Event(String title, String date, String time, String location,
                  String description, List<RideInfo> rideLocation, ArrayList<String> itemList,
