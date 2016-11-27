@@ -7,8 +7,6 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
-import com.facebook.AccessToken;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -17,23 +15,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Semaphore;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
-import static android.R.attr.key;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -41,8 +29,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button backButton;
     private String eventAddress;
     private SharedPreferencesEditor editor;
-    private String carAddress;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +52,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(i);
             }
         });
-
     }
 
 
@@ -88,11 +73,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         final DatabaseReference ref;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String key = "aee";
         final String s = getIntent().getStringExtra("eventNumber");
 
         ref = database.getReference("TEAM19/events/" + s);
-
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -100,7 +83,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String ea = dataSnapshot.child("location").getValue(String.class);
                 setEventAddress(ea);
                 LatLng eventLocation;
-                //eventLocation = getLocationFromAddress(this, "3831 Van Dyke Ave, San Diego, CA, 92105");
                 eventLocation = getLocationFromAddress(maps, eventAddress);
                 float zoomLevel = (float) 17.0;
                 GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
@@ -110,12 +92,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         LatLng ll = getLocationFromAddress(maps, rideInfo.get(i).getCarAddress());
                         if (ll != null) {
                             mMap.addMarker(new MarkerOptions().position(ll).title(rideInfo.get(i).getCarAddress()).icon(BitmapDescriptorFactory.fromResource(R.drawable.car)));
-//                            rideInfo.get(i).setLatlng(ll);
-//                            ref.child("rideLocation").setValue(rideInfo);
                         }
                     }
                 }
-
 
                 mMap.addMarker(new MarkerOptions().position(eventLocation).title("Event Location"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, zoomLevel));
@@ -130,14 +109,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (!(marker.getTitle().equals("Event Location"))) {
+            if (!(marker.getTitle().equals("Event Location"))) {
                 editor = new SharedPreferencesEditor(getSharedPreferences("marker", MODE_PRIVATE));
                 editor.addMarker(marker.getPosition());
                 Intent intent = new Intent(MapsActivity.this, Ride.class);
                 intent.putExtra("Marker Name", marker.getTitle() + ":" + s);
                 startActivity(intent);
-                }
-                return false;
+            }
+            return false;
             }
         });
     }
@@ -160,20 +139,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             latlng = new LatLng(location.getLatitude(), location.getLongitude() );
 
         } catch (Exception ex) {
-
             ex.printStackTrace();
         }
 
         return latlng;
     }
-
-//    public String[] getCarLocations() {
-//        String[] carAddresses = new String[3];
-//        carAddresses[0] = "21 Edendale St, Ladera Ranch, CA, 92694";
-//        carAddresses[1] = "3831 Van Dyke Ave, San Diego, CA, 92105";
-//        carAddresses[2] = "2915 Estancia, San Clemente, CA, 92670";
-//        return carAddresses;
-//    }
 
     public void setEventAddress(String ea) {
         eventAddress = ea;

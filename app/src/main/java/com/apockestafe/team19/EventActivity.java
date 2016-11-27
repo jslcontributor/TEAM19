@@ -50,11 +50,9 @@ public class EventActivity extends AppCompatActivity {
                         location.getText().toString(), description.getText().toString(),
                          ri, itemsList);
                 event.add();
-              //  event.setCount();
                 sleep(1000);
                 startActivity(new Intent(EventActivity.this, MainActivity.class));
                 finish();
-                //startActivity(new Intent(EventActivity.this, LoginActivity.class));
             }
         });
     }

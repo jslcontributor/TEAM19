@@ -38,9 +38,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.facebook.FacebookSdk;
 import com.google.firebase.auth.FirebaseUser;
 
-import static com.facebook.internal.FacebookDialogFragment.TAG;
-
-
 public class SigninActivity extends FragmentActivity {
 
     private EditText inputEmail, inputPassword;
@@ -51,28 +48,12 @@ public class SigninActivity extends FragmentActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private LoginFragment loginFragment;
     CallbackManager callbackManager;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private GoogleApiClient client;
 
-    // @Override
-    //public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    //
-    //}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //String skipper = "true";
-        //     editor = new SharedPreferencesEditor(getSharedPreferences("signIn", MODE_PRIVATE));
-        //   if(editor.getLoginSkip().equals(skipper)){
-        //     startActivity(new Intent(SigninActivity.this, MainActivity.class));
-        //   finish();
-        //}
-
         super.onCreate(savedInstanceState);
-       // Firebase.setAndroidContext(this);
         if(savedInstanceState == null) {
             loginFragment = new LoginFragment();
             getSupportFragmentManager().beginTransaction().add(android.R.id.content, loginFragment).commit();
@@ -82,23 +63,11 @@ public class SigninActivity extends FragmentActivity {
         }
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-        //loginButton.setFragment(com.facebook.login.LoginFragment.java);
         AppEventsLogger.activateApp(this);
-        //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
-
-//        if (auth.getCurrentUser() != null) {
-//            editor.addLoginSkip(skipper);
-//            startActivity(new Intent(SigninActivity.this, MainActivity.class));
-//            finish();
-//        }
 
         // set the view now
         setContentView(R.layout.activity_signin);
-
-        //      Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
@@ -106,9 +75,6 @@ public class SigninActivity extends FragmentActivity {
         btnSignup = (Button) findViewById(R.id.btn_signup);
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
-
-        //Get Firebase auth instance
-      //  auth = FirebaseAuth.getInstance();
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +104,7 @@ public class SigninActivity extends FragmentActivity {
                 }
             }
         };
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,12 +192,4 @@ public class SigninActivity extends FragmentActivity {
             auth.removeAuthStateListener(mAuthListener);
         }
     }
-
-
-
-    //private void handleFacebookAccessToken(AccessToken token) {
-      //  Log.d(TAG, "handleFacebookAccessToken:" + token);
-    //    AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-//
-  //  }
 }

@@ -3,12 +3,9 @@ package com.apockestafe.team19;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
-
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -27,13 +24,7 @@ public class EventList implements Observer{
 
     public EventList(DataSnapshot dataSnapshot) {
         list = new ArrayList<>();
-       /* userEmail = email.replaceAll("\\.", "@");
-        try{
-            dataSnapshot = dataSnapshot.child(userEmail);
-        }
-        catch (Exception e) {
-            return;
-        }*/
+
         for(DataSnapshot data : dataSnapshot.child("events").getChildren()) {
             addNewEvent(data);
         }
@@ -68,7 +59,6 @@ public class EventList implements Observer{
         });
     }
 
-
     private void addNewEvent(DataSnapshot data) {
         GenericTypeIndicator<ArrayList<RideInfo>> t = new GenericTypeIndicator<ArrayList<RideInfo>>() {};
         GenericTypeIndicator<ArrayList<String>> r = new GenericTypeIndicator<ArrayList<String>>() {};
@@ -86,7 +76,6 @@ public class EventList implements Observer{
     public boolean add(Event event) {
         if(find(event.getTitle()) == list.size()) {
             list.add(event);
-//            event.add();
             return true;
         }
         else{
@@ -109,16 +98,8 @@ public class EventList implements Observer{
         }
     }
 
-    public int size() {
-        return list.size();
-    }
-
     public Event get(int i) {
         return list.get(i);
     }
 
-    public Event[] getArray() {
-        Event[] array = new Event[list.size()];
-        return list.toArray(array);
-    }
 }
