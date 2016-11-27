@@ -155,6 +155,17 @@ public class ListRideActivity extends AppCompatActivity {
         return validAddress;
     }
 
+    public boolean checkValidAddress(String streetAddress, Context context) {
+        boolean validAddress = false;
+        LatLng latlng;
+        latlng = getLocationFromAddress(context, streetAddress);
+        if (latlng != null)
+            validAddress = true;
+
+        return validAddress;
+    }
+
+
     public LatLng getLocationFromAddress(Context context, String strAddress) {
 
         Geocoder coder = new Geocoder(context);

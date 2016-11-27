@@ -18,10 +18,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 public class EventInfo extends AppCompatActivity {
@@ -37,37 +39,24 @@ public class EventInfo extends AppCompatActivity {
     //WebDialog dialog;
     //GameRequestDialog requestDialog;
     String s;
-    CallbackManager callbackManager;
+//    CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
         editor = new SharedPreferencesEditor(getSharedPreferences("login", MODE_PRIVATE));
-        /*dialog = new WebDialog(null, null);
-        requestDialog.registerCallback(callbackManager, new FacebookCallback<GameRequestDialog.Result>() {
-            @Override
-            public void onSuccess(GameRequestDialog.Result result) {
-                String id = result.getRequestId();
-            }
 
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        });*/
         setContentView(R.layout.activity_event_info);
 
         eventDescription = (TextView) findViewById(R.id.eventDescription);
+
         s = getIntent().getStringExtra("eventNumber");
 
         friendsListView = (ListView) findViewById(R.id.friendsListView);
+        TextView textView = new TextView(this);
+        textView.setText("Who is Attending:");
+        friendsListView.addHeaderView(textView);
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("TEAM19");
@@ -75,16 +64,27 @@ public class EventInfo extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String description = (String) dataSnapshot.child("events").child(s).child("description").getValue();
-                eventDescription.setText("Event Description\n" + description);
+                String time = (String) dataSnapshot.child("events").child(s).child("time").getValue();
+                String date = (String) dataSnapshot.child("events").child(s).child("date").getValue();
+                String location = (String) dataSnapshot.child("events").child(s).child("location").getValue();
+                eventDescription.setText("Time: " + time + " " + date + "\nEvent Description:\n" + description);
+
                 setTitle((String) dataSnapshot.child("events").child(s).child("title").getValue());
 
                 String myName = editor.getName();
-                ArrayList<String> names = (ArrayList<String>) dataSnapshot.child("events").child(s)
-                        .child("attendingList").getValue();
-                int index = Collections.binarySearch(names, myName);
-                if(index < 0) {
+                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                ArrayList<String> names = dataSnapshot.child("events").child(s)
+                        .child("attendingList").getValue(t);
+                if (names == null) {
+                    names = new ArrayList<>();
                     names.add(myName);
                     ref.child("events").child(s).child("attendingList").setValue(names);
+                } else {
+                    int index = Collections.binarySearch(names, myName);
+                    if(index < 0) {
+                        names.add(myName);
+                        ref.child("events").child(s).child("attendingList").setValue(names);
+                    }
                 }
 
             }
@@ -141,6 +141,8 @@ public class EventInfo extends AppCompatActivity {
                 buttonHandler();
             }
         });
+
+        listHandler();
     }
 
     public void buttonHandler() {
@@ -162,8 +164,10 @@ public class EventInfo extends AppCompatActivity {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                enums = (ArrayList<String>) dataSnapshot.child("events").child(s)
-                        .child("attendingList").getValue();
+                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                enums = dataSnapshot.child("events").child(s).child("attendingList").getValue(t);
+                if (enums == null)
+                    enums = new ArrayList<>();
                 adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, enums);
                 friendsListView.setAdapter(adapter);
             }

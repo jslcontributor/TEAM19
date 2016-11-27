@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         editor = new SharedPreferencesEditor(getSharedPreferences("login", MODE_PRIVATE));
+        final String name = getIntent().getStringExtra("name");
+        if (name != null)
+            editor.addName(name);
         Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
         if(targetUrl != null) {
             token = getIntent().getExtras().getString("fb_access_token");
