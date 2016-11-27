@@ -8,15 +8,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.google.android.gms.vision.text.Text;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +32,7 @@ public class Ride extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride);
+        setTitle("Ride Info");
 
         final String val = getIntent().getStringExtra("Marker Name");
         String[] split = val.split(":");
@@ -61,9 +59,6 @@ public class Ride extends AppCompatActivity {
         final DatabaseReference ref;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        System.out.println("MARKER NAME: " + s);
-        System.out.println("KEY FOR RIDE.JAVA: " + key);
-//        String key = "aee";
         errorText.setText(s);
 
         ref = database.getReference("TEAM19/events/" + key);
@@ -73,68 +68,57 @@ public class Ride extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
-                        List<RideInfo> rideInfo = dataSnapshot.child("rideLocation").getValue(t);
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
+                    List<RideInfo> rideInfo = dataSnapshot.child("rideLocation").getValue(t);
 
-//                        String markerAddress = editor.getMarker();
-    //                    System.out.println("MARKER ADDRESS: " + markerAddress);
-                        // Need to get street address or convert to LatLng
-                        for (int i = 0; i < rideInfo.size(); i++) {
-
-
-                            if (rideInfo.get(i).getCarAddress().equals(s)) {
-                                RideInfo ri = rideInfo.get(i);
-                                if (ri.getNumberSeatsInCar() == 0) {
-                                    errorText.setText("No more available spots");
-                                } else {
-                                    if (ri.getPeopleInCar() == null) {
-                                        List<String> people = new ArrayList<>();
-                                        ri.setPeopleInCar(people);
-                                    }
-                                    boolean inCar = false;
-                                    boolean inAnotherCar = checkIfPersonIsInAnyCar(rideInfo, editor.getMyEmail(), ri.getCarAddress());
-
-                                    System.out.println("Email: " + editor.getMyEmail());
-                                    for (int j = 0; j < ri.getPeopleInCar().size(); j++) {
-                                        if (ri.getPeopleInCar().get(j).equals(editor.getMyEmail())) {
-                                            inCar = true;
-                                        }
-                                    }
-//                                    System.out.println("Value of inCar: " + inCar);
-                                    if (!inCar && !inAnotherCar) {
-//                                        System.out.println("User added to car: " + editor.getMyEmail());
-                                        ri.getPeopleInCar().add(editor.getMyEmail());
-                                        addPersonToList(editor.getMyEmail());
-                                        rideCount = ri.getNumberSeatsInCar();
-//                                        System.out.println("SEAT COUNT: " + rideCount);
-                                        rideCount--;
-                                        ri.setNumberSeatsInCar(rideCount);
-                                        seatsValue.setText(ri.getNumberSeatsInCar() + "");
-                                        errorText.setText("Added to this car.");
-                                    } else if (inCar && !inAnotherCar) {
-                                        errorText.setText("Already added to this car");
-                                    } else if (!inCar && inAnotherCar) {
-                                        errorText.setText("Already signed up for another car");
-                                    }
-
-                                    ref.child("rideLocation").setValue(rideInfo);
-
-
+                    for (int i = 0; i < rideInfo.size(); i++) {
+                        if (rideInfo.get(i).getCarAddress().equals(s)) {
+                            RideInfo ri = rideInfo.get(i);
+                            if (ri.getNumberSeatsInCar() == 0) {
+                                errorText.setText("No more available spots");
+                            } else {
+                                if (ri.getPeopleInCar() == null) {
+                                    List<String> people = new ArrayList<>();
+                                    ri.setPeopleInCar(people);
                                 }
+                                boolean inCar = false;
+                                boolean inAnotherCar = checkIfPersonIsInAnyCar(rideInfo, editor.getMyEmail(), ri.getCarAddress());
+
+                                for (int j = 0; j < ri.getPeopleInCar().size(); j++) {
+                                    if (ri.getPeopleInCar().get(j).equals(editor.getMyEmail())) {
+                                        inCar = true;
+                                    }
+                                }
+                                if (!inCar && !inAnotherCar) {
+                                    ri.getPeopleInCar().add(editor.getMyEmail());
+                                    addPersonToList(editor.getMyEmail());
+                                    rideCount = ri.getNumberSeatsInCar();
+                                    rideCount--;
+                                    ri.setNumberSeatsInCar(rideCount);
+                                    seatsValue.setText(ri.getNumberSeatsInCar() + "");
+                                    errorText.setText("Added to this car.");
+                                } else if (inCar && !inAnotherCar) {
+                                    errorText.setText("Already added to this car");
+                                } else if (!inCar && inAnotherCar) {
+                                    errorText.setText("Already signed up for another car");
+                                }
+
+                                ref.child("rideLocation").setValue(rideInfo);
                             }
                         }
                     }
+                }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-                    }
+                }
 
-                });
+            });
             }
         });
 
@@ -142,13 +126,11 @@ public class Ride extends AppCompatActivity {
         removeFromCarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editor = new SharedPreferencesEditor(getSharedPreferences("login",MODE_PRIVATE));
-                // if already signed up for ride, do
+            editor = new SharedPreferencesEditor(getSharedPreferences("login",MODE_PRIVATE));
                 final DatabaseReference ref;
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                String key = "aee";
-                ref = database.getReference("TEAM19/events/" + key);
 
+                ref = database.getReference("TEAM19/events/" + key);
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -208,13 +190,10 @@ public class Ride extends AppCompatActivity {
                             else {
                                 listViewText.setText("No one has signed up for this ride");
                             }
-
                         }
                     }
                 }
                 seatsValue.setText(rideCount + "");
-
-
             }
 
             @Override
@@ -262,7 +241,6 @@ public class Ride extends AppCompatActivity {
                         return true;
             }
         }
-
         return false;
     }
 }

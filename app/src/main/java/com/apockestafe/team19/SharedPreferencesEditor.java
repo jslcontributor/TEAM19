@@ -5,9 +5,7 @@ package com.apockestafe.team19;
  */
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-
 import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,11 +27,10 @@ class SharedPreferencesEditor {
         editor.apply();
     }
 
-    public void deleteEvents(ArrayList<String> eventNumbers) {
+    public void deleteEvent(ArrayList<String> eventNumbers, int pos) {
         Set<String> set = new HashSet<>();
         set.addAll(eventNumbers);
-        set.remove("1");
-//        editor.remove("myEvents");
+        set.remove(pos);
         editor.putStringSet("myEvents", set);
         editor.apply();
     }
@@ -42,7 +39,6 @@ class SharedPreferencesEditor {
         editor.putString("name", name);
         editor.apply();
     }
-
 
     public void addMyEmail(String email) {
         editor.putString("myEmail", email);

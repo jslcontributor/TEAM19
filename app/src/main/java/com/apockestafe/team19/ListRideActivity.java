@@ -1,15 +1,12 @@
 package com.apockestafe.team19;
 
-import com.apockestafe.team19.Event;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -20,21 +17,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListRideActivity extends AppCompatActivity {
 
     private Button submitRide, cancelRide;
-    //private TextView address, seatCount;
     private EditText streetAddressValue, cityValue, stateValue, zipcodeValue, seatCountValue;
     private TextView errorText;
     private boolean rideListed;
     private int seatCount;
     private String addressValue;
-    private ArrayList<String> carData = new ArrayList<>();
-    private Event e;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,14 +70,13 @@ public class ListRideActivity extends AppCompatActivity {
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        //                        String key = "aee";
                         final DatabaseReference ref;
                         final FirebaseDatabase database = FirebaseDatabase.getInstance();
                         ref = database.getReference("TEAM19/events/" + val);
                         ArrayList<String> peopleInCar = new ArrayList<>();
                         Context c = getApplicationContext();
                         LatLng ll = getLocationFromAddress(c, addressValue);
-                        RideInfo ri = new RideInfo(addressValue, peopleInCar, seatCount); //, ll);
+                        RideInfo ri = new RideInfo(addressValue, peopleInCar, seatCount);
                         List<RideInfo> rideInfo;
                         GenericTypeIndicator<List<RideInfo>> t = new GenericTypeIndicator<List<RideInfo>>() {};
                         rideInfo = dataSnapshot.child("rideLocation").getValue(t);
@@ -92,9 +84,6 @@ public class ListRideActivity extends AppCompatActivity {
                             rideInfo = new ArrayList<>();
                         rideInfo.add(ri);
                         ref.child("rideLocation").setValue(rideInfo);
-
-
-
                     }
 
                     @Override
@@ -110,8 +99,6 @@ public class ListRideActivity extends AppCompatActivity {
             } else {
                 errorText.setText("You've already listed your ride.");
             }
-
-
             }
         });
 
@@ -153,11 +140,8 @@ public class ListRideActivity extends AppCompatActivity {
                         zcv.getText().toString();
 
         if (address.compareTo(", , , ") == 0) {
-            System.out.println("Address: ");
             return "";
         }
-
-        System.out.println("Address: " + address);
         return address;
     }
 
@@ -185,16 +169,12 @@ public class ListRideActivity extends AppCompatActivity {
             Address location = address.get(0);
             location.getLatitude();
             location.getLongitude();
-
             latlng = new LatLng(location.getLatitude(), location.getLongitude() );
 
         } catch (Exception ex) {
 
             ex.printStackTrace();
         }
-
         return latlng;
     }
-
-
 }

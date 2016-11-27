@@ -11,19 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-//import com.facebook.Session;
-//import com.facebook.Session;
-import com.facebook.internal.WebDialog;
-//import com.facebook.internal.Session;
 import com.facebook.share.model.AppInviteContent;
-import com.facebook.share.model.GameRequestContent;
 import com.facebook.share.widget.AppInviteDialog;
-import com.facebook.share.widget.GameRequestDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +26,6 @@ import java.util.Collections;
 
 public class EventInfo extends AppCompatActivity {
 
-   // private Button mapButton, listRideButton, backButton;
     private Button mapButton, listRideButton, backButton, inviteButton, itemsButton;
     private DatabaseReference ref;
     private  FirebaseDatabase database;
@@ -79,7 +68,6 @@ public class EventInfo extends AppCompatActivity {
         s = getIntent().getStringExtra("eventNumber");
 
         friendsListView = (ListView) findViewById(R.id.friendsListView);
-
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("TEAM19");
@@ -125,7 +113,6 @@ public class EventInfo extends AppCompatActivity {
                 Intent i = new Intent(EventInfo.this, MapsActivity.class);
                 i.putExtra("eventNumber", s);
                 startActivity(i);
-
             }
         });
 
@@ -136,7 +123,6 @@ public class EventInfo extends AppCompatActivity {
                 Intent i = new Intent(EventInfo.this, ListRideActivity.class);
                 i.putExtra("eventNumber", s);
                 startActivity(i);
-
             }
         });
 
@@ -153,8 +139,6 @@ public class EventInfo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 buttonHandler();
-                //onClickRequestButton();
-                //sendInvite();
             }
         });
     }
