@@ -1,8 +1,5 @@
 package com.apockestafe.team19;
 
-/**
- * Created by JLee on 10/30/16.
- */
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import com.google.android.gms.maps.model.LatLng;
@@ -10,6 +7,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+/*
+*** SharePreferencesEditor holds all of the data associated with
+*** each user
+ */
 class SharedPreferencesEditor {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;

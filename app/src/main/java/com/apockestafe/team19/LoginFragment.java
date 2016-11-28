@@ -28,12 +28,15 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.facebook.internal.FacebookDialogFragment.TAG;
 
+/*
+*** LoginFragment is used to verify the Facebook login was a success, and
+*** if so launches the MainActivity
+ */
 public class LoginFragment extends Fragment {
 
     private CallbackManager mCallbackManager;
     public AccessTokenTracker mAccessTokenTracker;
     public ProfileTracker mProfileTracker;
-//    private FirebaseAuth mAuth;
     private SharedPreferencesEditor editor;
     public static Context contextOfApplication;
     LoginButton loginButton;
@@ -88,11 +91,7 @@ public class LoginFragment extends Fragment {
 
         if (at != null) {
             Profile profile = Profile.getCurrentProfile();
-//            Context applicationContext = MainActivity.getContextOfApplication();
-//            editor = new SharedPreferencesEditor(applicationContext.getSharedPreferences("login", MODE_PRIVATE));
             final String name = profile.getName();
-//            System.out.println("NAME: " + name);
-//            editor.addName(name);
             Log.d("get me profile", name);
             Intent i = new Intent(getActivity(), MainActivity.class);
             i.putExtra("name", name);

@@ -13,6 +13,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Set;
 import static android.content.Context.MODE_PRIVATE;
 
+/*
+*** The Event class that stores all of the information
+*** related to an event
+ */
 public class Event extends Observable {
 
     private String title, date, time, location, description;
@@ -28,21 +32,6 @@ public class Event extends Observable {
     public Event(String title, String date, String time, String location,
                  String description, List<RideInfo> rideLocation, ArrayList<String> itemList,
                  ArrayList<String> attendingList) {
-       // setCount();
-
-        //count = new AtomicInteger();
-
-        //String key = ServerValue.TIMESTAMP.toString();
-        // String key;
-     //   System.out.println("justin"+count.get());
-      //  setCounter();
-       /* Thread back = new Thread() {
-            public void run() {
-                setCounter();
-            }
-        };
-        back.start();*/
-       // setCounter();
 
         this.title = title;
         this.date = date;
@@ -77,6 +66,10 @@ public class Event extends Observable {
         }
     }
 
+    /*
+    *** This method adds a new Event to the Firebase database
+    *** and the users sharedPreferences
+     */
     public void add() {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("TEAM19");
@@ -225,15 +218,6 @@ public class Event extends Observable {
     public ArrayList<String> getItemList() { return itemList; }
 
     public ArrayList<String> getAttendingList() {return attendingList;}
-
-    public void addRideLocation(String[] rd) {
-
-    }
-  //  public boolean equals(Object comparable) {return false;} //implement if need comparator
-
-    public String toString() { //implement for event display in listview?
-        return null;
-    }
 
 }
 

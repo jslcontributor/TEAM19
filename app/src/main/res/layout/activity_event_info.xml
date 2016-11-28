@@ -64,9 +64,9 @@
         android:layout_width="300.0dp"
         android:textAlignment="center"
         android:id="@+id/eventDescription"
-        android:layout_height="100.0dp"
         android:layout_below="@+id/backButton"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_height="175.0dp" />
 
     <Button
         android:text = "Invite"

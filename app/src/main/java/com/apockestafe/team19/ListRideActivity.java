@@ -20,6 +20,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+*** ListRideActivity is the activity that enables users
+*** to add their ride information to the current event
+ */
 public class ListRideActivity extends AppCompatActivity {
 
     private Button submitRide, cancelRide;
@@ -42,6 +46,11 @@ public class ListRideActivity extends AppCompatActivity {
         seatCountValue = (EditText) findViewById(R.id.seatCountValue);
         errorText = (TextView)findViewById(R.id.errorText);
 
+        /*
+        *** When clicked, the EditText variables are checked for the correct inputs
+        *** and if it passes them all, the ride information is added to Firebase and
+        *** the current event
+         */
         submitRide = (Button) findViewById(R.id.submitRide);
         submitRide.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +111,9 @@ public class ListRideActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        *** When clicked, launches the EventInfo activity
+         */
         cancelRide = (Button) findViewById(R.id.cancelRide);
         cancelRide.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +177,9 @@ public class ListRideActivity extends AppCompatActivity {
         return validAddress;
     }
 
-
+    /*
+    *** Creates a LatLng object from the given street address
+     */
     public LatLng getLocationFromAddress(Context context, String strAddress) {
 
         Geocoder coder = new Geocoder(context);

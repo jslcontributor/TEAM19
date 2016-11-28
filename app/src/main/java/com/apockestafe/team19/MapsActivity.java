@@ -23,6 +23,10 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
+/*
+*** MapsActivity is the activity that displays the events location pin
+*** and the ride location pins
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -43,6 +47,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         final String key = getIntent().getStringExtra("eventNumber");
 
+        /*
+        *** When clicked, launches EventInfo
+         */
         backButton = (Button) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,17 +61,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
+    /*
+    *** When the map is created, the event location and ride locations are added
+    *** as pins to the map
      */
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         final Context maps = getApplicationContext();
@@ -106,6 +106,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        /*
+        *** When a marker is clicked, launch the Ride activity and pass
+        *** the name of the marker and event number to it
+         */
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -121,6 +125,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    /*
+    *** Creates a LatLng object from the current street address
+     */
     public LatLng getLocationFromAddress(Context context,String strAddress) {
 
         Geocoder coder = new Geocoder(context);

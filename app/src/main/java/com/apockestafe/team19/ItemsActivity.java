@@ -20,6 +20,10 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
+/*
+*** ItemsActivity is the activity that displays the items
+*** attendees have added to the current event
+ */
 public class ItemsActivity extends AppCompatActivity {
     private Button backButton, addItemButton;
     private ListView itemsListView;
@@ -41,6 +45,9 @@ public class ItemsActivity extends AppCompatActivity {
         itemsListView = (ListView) findViewById(R.id.itemsListView);
         initializeItemsListView(s);
 
+        /*
+        *** When clicked, launches the EventInfo activity
+         */
         backButton = (Button) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +58,10 @@ public class ItemsActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        *** When clicked, add the item from the EditText variable
+        *** and adds it to Firebase and displays it in the listview
+         */
         addItemEditText = (EditText) findViewById(R.id.addItemEditText);
         addItemButton = (Button) findViewById(R.id.addItemButton);
         addItemButton.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +93,10 @@ public class ItemsActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        *** When a long click is registered, a popup is displayed verifying
+        *** is the user wants to delete the item from the listview
+         */
         itemsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -134,6 +149,10 @@ public class ItemsActivity extends AppCompatActivity {
         });
     }
 
+    /*
+    *** Creates the listview and pulls items from Firebase associated
+    *** with the event and displays them
+     */
     private  void initializeItemsListView(final String s) {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("TEAM19");

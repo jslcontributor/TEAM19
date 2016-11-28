@@ -13,6 +13,9 @@ import java.util.List;
 
 import static android.os.SystemClock.sleep;
 
+/*
+*** EventActivty is the view used to create a new Event
+ */
 public class EventActivity extends AppCompatActivity {
 
     private EditText title, date, time, street, city, state, zipcode, description;
@@ -45,6 +48,10 @@ public class EventActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        *** When pushed, the information is pulled from the
+        *** EditText variables and creates a new event with them
+         */
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,10 +63,6 @@ public class EventActivity extends AppCompatActivity {
                 ListRideActivity addressManager = new ListRideActivity();
                 location = addressManager.createAddress(street, city, state, zipcode);
 
-             /*   if(!addressManager.checkValidAddress(location, getApplicationContext())) {
-                    Toast.makeText(getApplicationContext(), "Not a valid address", Toast.LENGTH_LONG).show();
-                    return;
-                }*/
                 Event event = new Event(title.getText().toString(),
                         date.getText().toString(), time.getText().toString(),
                         location, description.getText().toString(),

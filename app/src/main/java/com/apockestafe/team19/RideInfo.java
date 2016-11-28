@@ -3,10 +3,9 @@ package com.apockestafe.team19;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
-/**
- * Created by nsallaire on 11/15/16.
+/*
+*** RideInfo holds all fo the information associated with a listed ride
  */
-
 public class RideInfo {
 
     private String carAddress;

@@ -5,39 +5,30 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.content.SharedPreferences;
-
-
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.*;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.facebook.FacebookSdk;
 import com.google.firebase.auth.FirebaseUser;
 
+/*
+*** SigninActivity is the activity a user first sees when downloading the app
+*** prompting them to sign in via Facebook
+ */
 public class SigninActivity extends FragmentActivity {
 
     private EditText inputEmail, inputPassword;
@@ -133,7 +124,6 @@ public class SigninActivity extends FragmentActivity {
                                 // signed in user can be handled in the listener.
                                 progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
-                                    // there was an error
                                     if (password.length() < 6) {
                                         inputPassword.setError(getString(R.string.minimum_password));
                                     } else {
@@ -148,15 +138,10 @@ public class SigninActivity extends FragmentActivity {
                         });
             }
         });
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     public Action getIndexApiAction() {
         Thing object = new Thing.Builder()
                 .setName("Signin Page") // TODO: Define a title for the content shown.
@@ -172,9 +157,6 @@ public class SigninActivity extends FragmentActivity {
     @Override
     public void onStart() {
         super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
         AppIndex.AppIndexApi.start(client, getIndexApiAction());
         auth.addAuthStateListener(mAuthListener);
@@ -183,9 +165,6 @@ public class SigninActivity extends FragmentActivity {
     @Override
     public void onStop() {
         super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
         if(mAuthListener != null) {

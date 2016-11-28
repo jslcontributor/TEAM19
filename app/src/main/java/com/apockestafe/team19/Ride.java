@@ -17,6 +17,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+*** Ride activity displays a list of current attendees signed up for the current ride,
+*** along with the number of seats still available
+ */
 public class Ride extends AppCompatActivity {
 
     private Button backButton, addToCarButton, removeFromCarButton;
@@ -45,6 +49,9 @@ public class Ride extends AppCompatActivity {
 
         scrollList = (ListView) findViewById(R.id.listViewOfPeople);
 
+        /*
+        *** When clicked, launches the MapsActivity
+         */
         backButton = (Button) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +70,11 @@ public class Ride extends AppCompatActivity {
 
         ref = database.getReference("TEAM19/events/" + key);
 
+        /*
+        *** When clicked, the user is added to the current ride if they
+        *** aren't already signed up for the current ride or they are
+        *** already signed up for a different ride in the event
+         */
         addToCarButton = (Button) findViewById(R.id.addToCarButton);
         addToCarButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +134,10 @@ public class Ride extends AppCompatActivity {
             }
         });
 
+        /*
+        *** When clicked, removes the user from the current ride if they are already
+        *** signed up for it
+         */
         removeFromCarButton = (Button) findViewById(R.id.removeFromCarButton);
         removeFromCarButton.setOnClickListener(new View.OnClickListener() {
             @Override

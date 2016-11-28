@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.Set;
 import bolts.AppLinks;
 
+/*
+*** MainActivity is the activity used to display all of the users
+*** events they are associated with
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ListView scrollList;
@@ -63,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        /*
+        *** When clicked, launches the EventActivity
+         */
         addbutton = (Button) findViewById(R.id.button1);
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        *** When clicked, launches the SettingsActivity
+         */
         settingsButton = (Button) findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        *** When a ListView element is clicked, it launches EventInfo and passes
+        *** the event number to the activity
+         */
         scrollList = (ListView) findViewById(R.id.listView);
         listAdapter();
         scrollList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        *** When a ListView element has a long click, a popup is displayed
+        *** verifying if the user wants to remove themselves from an event
+         */
         scrollList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, final long id) {
@@ -130,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
+    *** Creates the ListView that holds the users current events
+     */
     public void listAdapter () {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("TEAM19");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
