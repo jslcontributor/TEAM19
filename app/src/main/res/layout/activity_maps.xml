@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="100.0dp"
         android:id="@+id/backButton"
+        android:background="#a4e8ad"
+        android:textColor="@android:color/white"
         android:layout_weight="50" />
 
     <fragment

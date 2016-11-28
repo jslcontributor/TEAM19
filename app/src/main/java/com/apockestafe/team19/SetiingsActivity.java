@@ -26,9 +26,9 @@ public class SetiingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editor = new SharedPreferencesEditor(getSharedPreferences("login", MODE_PRIVATE));
-                if (firstName.getText().length() != 0)
+//                if (firstName.getText().length() != 0)
                   //  editor.addFirstName(firstName.getText().toString());
-                if (lastName.getText().length() != 0)
+//                if (lastName.getText().length() != 0)
                   //  editor.addLastName(lastName.getText().toString());
 
                 startActivity(new Intent(SetiingsActivity.this, MainActivity.class));

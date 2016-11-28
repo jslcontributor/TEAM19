@@ -10,16 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="50.0dp"
         android:layout_marginTop="463dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/btn_sign_out"
+        android:background="#d1e8ff"
         android:textColor="@android:color/white"
+        android:text="@string/btn_sign_out"
         android:textStyle="bold" />
 
     <Button
         android:text="Back"
         android:layout_width="match_parent"
         android:layout_height="50.0dp"
-        android:background="@color/colorPrimary"
+        android:background="#ffd1d1"
         android:textColor="@android:color/white"
         android:id="@+id/backButton" />
 

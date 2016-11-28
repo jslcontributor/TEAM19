@@ -11,57 +11,24 @@
     tools:context="com.apockestafe.team19.EventInfo">
 
     <Button
-        android:text="Go To Map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
-        android:id="@+id/MapButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="43dp" />
-
-    <Button
-        android:text="List Ride"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/MapButton"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="44dp"
-        android:id="@+id/listRideButton" />
-
-    <Button
         android:text="Back to Events"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:background="#ffd1d1"
+        android:textColor="@android:color/white"
         android:layout_marginStart="11dp"
-        android:id="@+id/backButton" />
-
-    <Button
-        android:text = "Invite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/inviteButton"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/listRideButton"
-        android:layout_marginStart="55dp" />
-
-    <TextView
-        android:layout_width="300.0dp"
-        android:textAlignment="center"
-        android:id="@+id/eventDescription"
-        android:layout_height="100.0dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/backButton"
-        android:layout_above="@+id/friendsListView" />
+        android:id="@+id/backButton"
+        android:layout_width="125dp" />
 
     <Button
         android:text="View Items"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
         android:id="@+id/itemsButton"
         android:layout_above="@+id/MapButton"
+        android:background="#e8e4a4"
+        android:textColor="@android:color/white"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp" />
 
@@ -72,5 +39,43 @@
         android:layout_above="@+id/itemsButton"
         android:layout_alignStart="@+id/eventDescription"
         android:layout_marginBottom="12dp" />
+
+    <Button
+        android:text="List Ride"
+        android:layout_height="40dp"
+        android:background="#e3d1ff"
+        android:textColor="@android:color/white"
+        android:id="@+id/listRideButton"
+        android:layout_width="100dp"
+        android:layout_below="@+id/itemsButton"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="Go To Map"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:id="@+id/MapButton"
+        android:background="#a4e8ad"
+        android:textColor="@android:color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="300.0dp"
+        android:textAlignment="center"
+        android:id="@+id/eventDescription"
+        android:layout_height="100.0dp"
+        android:layout_below="@+id/backButton"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text = "Invite"
+        android:layout_width="100dp"
+        android:id="@+id/inviteButton"
+        android:background="#d1e8ff"
+        android:textColor="@android:color/white"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
