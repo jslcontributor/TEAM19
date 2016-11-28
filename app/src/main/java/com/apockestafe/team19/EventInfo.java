@@ -55,8 +55,9 @@ public class EventInfo extends AppCompatActivity {
 
         friendsListView = (ListView) findViewById(R.id.friendsListView);
         TextView textView = new TextView(this);
-        textView.setText("Who is Attending:");
+        textView.setText("Event Attendees:");
         friendsListView.addHeaderView(textView);
+
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("TEAM19");
@@ -67,7 +68,7 @@ public class EventInfo extends AppCompatActivity {
                 String time = (String) dataSnapshot.child("events").child(s).child("time").getValue();
                 String date = (String) dataSnapshot.child("events").child(s).child("date").getValue();
                 String location = (String) dataSnapshot.child("events").child(s).child("location").getValue();
-                eventDescription.setText("Time: " + time + " " + date + "\nEvent Description:\n" + description);
+                eventDescription.setText("\n\nEvent Summary\n" + "Time: " + time + " | Date: " + date + "\n\nEvent Description:\n" + description);
 
                 setTitle((String) dataSnapshot.child("events").child(s).child("title").getValue());
 
