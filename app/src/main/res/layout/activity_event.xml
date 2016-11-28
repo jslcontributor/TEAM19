@@ -74,7 +74,7 @@
         android:layout_below="@+id/time"
         android:layout_alignEnd="@+id/time"
         android:layout_alignStart="@+id/time"
-        android:text="Street Address" />
+        android:hint="Street Address" />
 
     <Button
         android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="City"
+        android:hint="City"
         android:ems="10"
         android:layout_below="@+id/street"
         android:id="@+id/city"
@@ -105,7 +105,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="State"
+        android:hint="State"
         android:ems="10"
         android:layout_centerVertical="true"
         android:layout_alignStart="@+id/street"
@@ -115,12 +115,13 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Zipcode"
+        android:hint="Zipcode"
         android:ems="10"
         android:id="@+id/zipcode"
         android:layout_below="@+id/state"
         android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/state" />
+        android:layout_alignStart="@+id/state"
+        android:inputType="number" />
 
     <TextView
         android:layout_width="wrap_content"
