@@ -67,7 +67,8 @@ public class EventInfo extends AppCompatActivity {
                 String time = (String) dataSnapshot.child("events").child(s).child("time").getValue();
                 String date = (String) dataSnapshot.child("events").child(s).child("date").getValue();
                 String location = (String) dataSnapshot.child("events").child(s).child("location").getValue();
-                eventDescription.setText("Time: " + time + " " + date + "\nEvent Description:\n" + description);
+                eventDescription.setText("Time: " + time + " " + date +  "\nLocation: " + location +
+                        "\nEvent Description:\n" + description);
 
                 setTitle((String) dataSnapshot.child("events").child(s).child("title").getValue());
 
