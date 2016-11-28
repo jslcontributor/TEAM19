@@ -86,6 +86,9 @@ public class EventInfo extends AppCompatActivity {
                         ref.child("events").child(s).child("attendingList").setValue(names);
                     }
                 }
+                adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, names);
+                friendsListView.setAdapter(adapter);
+//                listHandler();
 
             }
 
@@ -142,7 +145,7 @@ public class EventInfo extends AppCompatActivity {
             }
         });
 
-        listHandler();
+        listHandler(ref);
     }
 
     public void buttonHandler() {
@@ -160,12 +163,14 @@ public class EventInfo extends AppCompatActivity {
         }
     }
 
-    public void listHandler() {
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+    public void listHandler(DatabaseReference ref2) {
+        DatabaseReference r = ref2.child("events").child(s).child("attendingList");
+        r.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
-                enums = dataSnapshot.child("events").child(s).child("attendingList").getValue(t);
+//                enums = dataSnapshot.child("events").child(s).child("attendingList").getValue(t);
+                enums = dataSnapshot.getValue(t);
                 if (enums == null)
                     enums = new ArrayList<>();
                 adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, enums);
