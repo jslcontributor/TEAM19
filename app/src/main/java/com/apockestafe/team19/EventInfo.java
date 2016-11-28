@@ -50,9 +50,13 @@ public class EventInfo extends AppCompatActivity {
         setContentView(R.layout.activity_event_info);
 
         eventDescription = (TextView) findViewById(R.id.eventDescription);
+
         s = getIntent().getStringExtra("eventNumber");
 
         friendsListView = (ListView) findViewById(R.id.friendsListView);
+        TextView textView = new TextView(this);
+        textView.setText("Who is Attending:");
+        friendsListView.addHeaderView(textView);
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("TEAM19");
@@ -60,7 +64,11 @@ public class EventInfo extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String description = (String) dataSnapshot.child("events").child(s).child("description").getValue();
-                eventDescription.setText("Event Description\n" + description);
+                String time = (String) dataSnapshot.child("events").child(s).child("time").getValue();
+                String date = (String) dataSnapshot.child("events").child(s).child("date").getValue();
+                String location = (String) dataSnapshot.child("events").child(s).child("location").getValue();
+                eventDescription.setText("Time: " + time + " " + date + "\nEvent Description:\n" + description);
+
                 setTitle((String) dataSnapshot.child("events").child(s).child("title").getValue());
 
                 String myName = editor.getName();

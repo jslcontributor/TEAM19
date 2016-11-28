@@ -52,22 +52,25 @@
         android:textAlignment="center"
         android:id="@+id/eventDescription"
         android:layout_height="100.0dp"
-        android:layout_below="@+id/backButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp" />
-
-    <ListView
-        android:layout_width="300.0dp"
-        android:layout_height="150.0dp"
-        android:layout_below="@+id/eventDescription"
-        android:layout_alignStart="@+id/eventDescription"
-        android:id="@+id/friendsListView" />
+        android:layout_below="@+id/backButton"
+        android:layout_above="@+id/friendsListView" />
 
     <Button
         android:text="View Items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/itemsButton"
-        android:layout_below="@+id/friendsListView"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/MapButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp" />
+
+    <ListView
+        android:layout_width="300.0dp"
+        android:layout_height="150.0dp"
+        android:id="@+id/friendsListView"
+        android:layout_above="@+id/itemsButton"
+        android:layout_alignStart="@+id/eventDescription"
+        android:layout_marginBottom="12dp" />
+
 </RelativeLayout>
