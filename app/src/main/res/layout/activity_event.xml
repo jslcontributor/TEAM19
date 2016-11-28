@@ -117,14 +117,12 @@
         android:layout_marginTop="22dp" />
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:id="@+id/description"
         android:layout_alignBaseline="@+id/textView4"
         android:layout_alignBottom="@+id/textView4"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/button_create"
-        android:layout_alignStart="@+id/zipcode" />
+        android:layout_width="300dp"
+        android:layout_toEndOf="@+id/textView4" />
 
     <Button
         android:layout_width="100dp"
