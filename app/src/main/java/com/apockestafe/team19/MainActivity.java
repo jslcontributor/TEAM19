@@ -12,28 +12,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.content.Intent;
-//import com.firebase.client.Firebase;
-import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.applinks.AppLinkData;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 import bolts.AppLinks;
 
@@ -75,10 +61,6 @@ public class MainActivity extends AppCompatActivity {
             editor.addEvents(eventNumbers);
         }
 
-
-
-
-        //handleFacebookAccessToken(token);
         setContentView(R.layout.activity_main);
 
         addbutton = (Button) findViewById(R.id.button1);
@@ -97,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SetiingsActivity.class));
             }
         });
+
         scrollList = (ListView) findViewById(R.id.listView);
         listAdapter();
         scrollList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -124,8 +107,6 @@ public class MainActivity extends AppCompatActivity {
                         events.addAll(set);
                         events.remove(position);
                         editor.deleteEvent(events, position);
-//                        scrollList.setAdapter(null);
-//                        listAdapter();
                         adapter.clear();
                         scrollList.setAdapter(adapter);
                         listAdapter();
@@ -162,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> eventNumbers = new ArrayList<>();
                 if (set != null) {
                     eventNumbers.addAll(0, set);
-//                    editor.deleteEvents(eventNumbers);
 
                     for (int i = 0; i < eventNumbers.size(); i++) {
                         String title = (String) dataSnapshot.child("events").child(eventNumbers.get(i)).child("title").getValue();

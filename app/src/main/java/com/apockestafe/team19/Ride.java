@@ -86,16 +86,16 @@ public class Ride extends AppCompatActivity {
                                     ri.setPeopleInCar(people);
                                 }
                                 boolean inCar = false;
-                                boolean inAnotherCar = checkIfPersonIsInAnyCar(rideInfo, editor.getMyEmail(), ri.getCarAddress());
+                                boolean inAnotherCar = checkIfPersonIsInAnyCar(rideInfo, editor.getName(), ri.getCarAddress());
 
                                 for (int j = 0; j < ri.getPeopleInCar().size(); j++) {
-                                    if (ri.getPeopleInCar().get(j).equals(editor.getMyEmail())) {
+                                    if (ri.getPeopleInCar().get(j).equals(editor.getName())) {
                                         inCar = true;
                                     }
                                 }
                                 if (!inCar && !inAnotherCar) {
-                                    ri.getPeopleInCar().add(editor.getMyEmail());
-                                    addPersonToList(editor.getMyEmail());
+                                    ri.getPeopleInCar().add(editor.getName());
+                                    addPersonToList(editor.getName());
                                     rideCount = ri.getNumberSeatsInCar();
                                     rideCount--;
                                     ri.setNumberSeatsInCar(rideCount);
@@ -142,14 +142,14 @@ public class Ride extends AppCompatActivity {
                                 boolean inCar = false;
                                 if (ri.getPeopleInCar() != null) {
                                     for (int j = 0; j < ri.getPeopleInCar().size(); j++) {
-                                        if (ri.getPeopleInCar().get(j).equals(editor.getMyEmail())) {
+                                        if (ri.getPeopleInCar().get(j).equals(editor.getName())) {
                                             inCar = true;
                                         }
                                     }
                                 }
                                 if (inCar) {
                                     for (int k = 0; k < ri.getPeopleInCar().size(); k++) {
-                                        if (ri.getPeopleInCar().get(k).equals(editor.getMyEmail())) {
+                                        if (ri.getPeopleInCar().get(k).equals(editor.getName())) {
                                             removePersonFromList(ri.getPeopleInCar().get(k));
                                             ri.getPeopleInCar().remove(k);
                                             rideCount = ri.getNumberSeatsInCar();
