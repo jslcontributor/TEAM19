@@ -24,17 +24,13 @@ public class MainActivityTest {
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule(MainActivity.class);
 
     @Test
-    public void ChangeviewWithAddEvent() {
+    public void testAddEvent() {
         onView(withId(R.id.button1)).perform(click());
         onView(withId(R.id.title)).check(matches(isDisplayed()));
     }
+
     @Test
-    public void LaunchScreen() {
-        onView(withId(R.id.button1)).perform(click());
-        onView(withId(R.id.title)).check(matches(isDisplayed()));
-    }
-    @Test
-    public void ChangeviewWithSettingsButton() {
+    public void testSettingsButton() {
         onView(withId(R.id.settingsButton)).perform(click());
         onView(withId(R.id.firstNameEditText)).check(matches(isDisplayed()));
     }

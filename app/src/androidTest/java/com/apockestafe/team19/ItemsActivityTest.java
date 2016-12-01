@@ -15,6 +15,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.widget.EditText;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -43,7 +44,7 @@ public class ItemsActivityTest {
 
 
     @Test
-    public void ChangeviewWithBackToEventInfo() {
+    public void testBackButton() {
         Intent intent = new Intent();
         intent.putExtra("eventNumber", "0");
         mActivityRule.launchActivity(intent);
@@ -52,11 +53,14 @@ public class ItemsActivityTest {
     }
 
     @Test
-    public void ChangeviewWithStayOnEvent() {
+    public void testNoTextAddItemButton() {
         Intent intent = new Intent();
         intent.putExtra("eventNumber", "0");
         mActivityRule.launchActivity(intent);
         onView(withId(R.id.addItemButton)).perform(click());
-        onView(withId(R.id.addItemButton)).check(matches(isDisplayed()));
+        String s = (String) mActivityRule.getActivity().addItemButton.getText();
+        if (s.equals(null)) {
+            onView(withId(R.id.addItemButton)).check(matches(isDisplayed()));
+        }
     }
 }

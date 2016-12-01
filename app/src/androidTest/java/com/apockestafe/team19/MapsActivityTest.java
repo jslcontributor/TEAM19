@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +28,7 @@ public class MapsActivityTest {
 
 
     @Test
-    public void ChangeviewWithBackToEvents() {
+    public void testBackButtonToEvents() {
         Intent intent = new Intent();
         intent.putExtra("eventNumber", "0");
         mActivityRule.launchActivity(intent);
@@ -32,14 +36,4 @@ public class MapsActivityTest {
         onView(withId(R.id.MapButton)).check(matches(isDisplayed()));
 
     }
-
-//    @Test
-//    public void ChangeviewWithMarkerClick() {
-//        Intent intent = new Intent();
-//        intent.putExtra("Marker Name", "3853 Van Dyke Ave, San Diego, CA, 92105:0");
-//        mActivityRule.launchActivity(intent);
-//        onView(withId(R.id.map)).perform(click());
-//        onView(withId(R.id.addToCarButton)).check(matches(isDisplayed()));
-//
-//    }
 }

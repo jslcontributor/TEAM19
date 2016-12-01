@@ -25,7 +25,7 @@ import java.util.ArrayList;
 *** attendees have added to the current event
  */
 public class ItemsActivity extends AppCompatActivity {
-    private Button backButton, addItemButton;
+    public Button backButton, addItemButton;
     private ListView itemsListView;
     private EditText addItemEditText;
     private ArrayList<String> itemList;
@@ -172,5 +172,9 @@ public class ItemsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void setEditText(String s) {
+        addItemEditText.setText(s);
     }
 }

@@ -56,7 +56,6 @@ public class ListRideActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
             addressValue = createAddress(streetAddressValue, cityValue, stateValue, zipcodeValue);
-            rideListed = checkIfListedRide(addressValue);
             seatCount = getSeatCount(seatCountValue);
             System.out.println("Valid address: " + checkValidAddress(addressValue));
 
@@ -70,7 +69,7 @@ public class ListRideActivity extends AppCompatActivity {
                 errorText.setText("Not a valid address.");
             } else if (seatCount == 0) {
                 errorText.setText("Error. Enter your seat count.");
-            }  else if (!rideListed && addressValue.length() > 0 && seatCount != 0 && checkValidAddress(addressValue)) {
+            }  else if (addressValue.length() > 0 && seatCount != 0 && checkValidAddress(addressValue)) {
                 errorText.setText(" ");
                 final DatabaseReference ref;
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -127,16 +126,9 @@ public class ListRideActivity extends AppCompatActivity {
         });
     }
 
-    public boolean checkIfListedRide(String aV) {
-//        ArrayList<String> cL = e.getRideLocation();
-//        for (int i = 0; i < cL.size(); i++) {
-//            if (carLocation.compareTo(cL.get(i)) == 0) {
-//                return true;
-//            }
-//        }
-        return false;
-    }
-
+    /*
+    *** Gets current seat count in current car
+     */
     public int getSeatCount(EditText scv) {
         String sc = scv.getText().toString();
         int seatCountInt = 0;
@@ -145,6 +137,9 @@ public class ListRideActivity extends AppCompatActivity {
         return seatCountInt;
     }
 
+    /*
+    *** Creates an address by appending the data from EditText fields together
+     */
     public String createAddress(EditText sav, EditText cv, EditText sv, EditText zcv) {
         String address = sav.getText().toString() + ", " +
                         cv.getText().toString() + ", " +
@@ -157,20 +152,13 @@ public class ListRideActivity extends AppCompatActivity {
         return address;
     }
 
+    /*
+    *** Checks address to make sure it's not null
+     */
     public boolean checkValidAddress(String streetAddress) {
         boolean validAddress = false;
         LatLng latlng;
         latlng = getLocationFromAddress(this, streetAddress);
-        if (latlng != null)
-            validAddress = true;
-
-        return validAddress;
-    }
-
-    public boolean checkValidAddress(String streetAddress, Context context) {
-        boolean validAddress = false;
-        LatLng latlng;
-        latlng = getLocationFromAddress(context, streetAddress);
         if (latlng != null)
             validAddress = true;
 

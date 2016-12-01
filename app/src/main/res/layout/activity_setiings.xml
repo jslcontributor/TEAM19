@@ -61,4 +61,14 @@
         android:layout_alignBaseline="@+id/lastNameTextView"
         android:layout_alignBottom="@+id/lastNameTextView"
         android:layout_toEndOf="@+id/lastNameTextView" />
+
+    <TextView
+        android:text="To remove yourself from events or remove items from an event, perform a long click."
+        android:id="@+id/textView6"
+        android:layout_width="300dp"
+        android:textAlignment="center"
+        android:layout_height="100dp"
+        android:layout_below="@+id/lastNameTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp" />
 </RelativeLayout>

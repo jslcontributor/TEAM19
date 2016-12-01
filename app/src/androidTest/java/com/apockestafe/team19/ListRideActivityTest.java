@@ -26,19 +26,8 @@ public class ListRideActivityTest {
     @Rule
     public ActivityTestRule<ListRideActivity> mActivityRule = new ActivityTestRule(ListRideActivity.class, true, false);
 
-
-//    @Test
-//    public void ChangeviewWithSubmitRide() {
-//        Intent intent = new Intent();
-//        intent.putExtra("eventNumber", "0");
-//        mActivityRule.launchActivity(intent);
-//        onView(withId(R.id.submitRide)).perform(click());
-//        onView(withId(R.id.listRideButton)).check(matches(isDisplayed()));
-//
-//    }
-
     @Test
-    public void ChangeviewWithBackToEventView() {
+    public void testBackButton() {
         Intent intent = new Intent();
         intent.putExtra("eventNumber", "0");
         mActivityRule.launchActivity(intent);

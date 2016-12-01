@@ -8,6 +8,9 @@ package com.apockestafe.team19;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.KeyEvent;
+
+import com.facebook.share.widget.AppInviteDialog;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,9 +22,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
-/**
- * Created by nsallaire on 11/28/16.
- */
 @RunWith(AndroidJUnit4.class)
 public class EventInfoTest {
     @Rule
@@ -29,7 +29,7 @@ public class EventInfoTest {
 
 
     @Test
-    public void ChangeviewWithBackToEvents() {
+    public void testBackToEventsButton() {
         Intent intent = new Intent();
         intent.putExtra("eventNumber", "0");
         mActivityRule.launchActivity(intent);
@@ -38,7 +38,7 @@ public class EventInfoTest {
 
     }
    @Test
-    public void ChangeviewWithviewItems() {
+    public void testItemsButton() {
        Intent intent = new Intent();
        intent.putExtra("eventNumber", "0");
        mActivityRule.launchActivity(intent);
@@ -46,7 +46,7 @@ public class EventInfoTest {
        onView(withId(R.id.addItemButton)).check(matches(isDisplayed()));
     }
     @Test
-    public void ChangeviewWithGoToMap() {
+    public void testMapButton() {
         Intent intent = new Intent();
         intent.putExtra("eventNumber", "0");
         mActivityRule.launchActivity(intent);
@@ -55,12 +55,12 @@ public class EventInfoTest {
 
     }
     @Test
-    public void ChangeviewWithGoToListRide() {
+    public void testListRideButton() {
         Intent intent = new Intent();
         intent.putExtra("eventNumber", "0");
         mActivityRule.launchActivity(intent);
         onView(withId(R.id.listRideButton)).perform(click());
         onView(withId(R.id.submitRide)).check(matches(isDisplayed()));
-
     }
+
 }

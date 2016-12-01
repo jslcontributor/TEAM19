@@ -24,7 +24,7 @@ public class SettingsActivityTest {
 
 
     @Test
-    public void ChangeviewWithBackToMainActivity() {
+    public void testBackButtonToMainActivity() {
         Intent intent = new Intent();
         intent.putExtra("eventNumber", "0");
         mActivityRule.launchActivity(intent);
@@ -33,13 +33,4 @@ public class SettingsActivityTest {
 
     }
 
-    @Test
-    public void ChangeviewWithBackToLogin() {
-        Intent intent = new Intent();
-        intent.putExtra("accessToken", "null");
-        mActivityRule.launchActivity(intent);
-        onView(withId(R.id.signOutButton)).perform(click());
-        onView(withId(R.id.progress_bar)).check(matches(isDisplayed()));
-
-    }
 }

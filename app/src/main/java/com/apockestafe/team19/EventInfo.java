@@ -174,7 +174,7 @@ public class EventInfo extends AppCompatActivity {
                     .setPreviewImageUrl(previewImageUrl)
                     .setPromotionDetails("eventNumber", s)
                     .build();
-            AppInviteDialog.show(this,content);
+            AppInviteDialog.show(this, content);
         }
     }
 

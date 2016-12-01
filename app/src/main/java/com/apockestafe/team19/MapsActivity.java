@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    public GoogleMap mMap;
     private Button backButton;
     private String eventAddress;
     private SharedPreferencesEditor editor;

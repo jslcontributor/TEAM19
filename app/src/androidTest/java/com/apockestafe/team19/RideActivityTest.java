@@ -24,7 +24,7 @@ public class RideActivityTest {
 
 
     @Test
-    public void ChangeviewWithBackToMaps() {
+    public void testBackButtonToMaps() {
         Intent intent = new Intent();
         intent.putExtra("Marker Name", "3853 Van Dyke Ave, San Diego, CA, 92105:0");
         mActivityRule.launchActivity(intent);
@@ -34,7 +34,7 @@ public class RideActivityTest {
     }
 
     @Test
-    public void ChangeviewDataWithAddClick() {
+    public void testAddToCarButton() {
         Intent intent = new Intent();
         intent.putExtra("Marker Name", "3853 Van Dyke Ave, San Diego, CA, 92105:0");
         mActivityRule.launchActivity(intent);
